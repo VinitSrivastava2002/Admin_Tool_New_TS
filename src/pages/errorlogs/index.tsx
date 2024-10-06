@@ -109,15 +109,15 @@ const ErrorLogs = () => {
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs value={value} onChange={handleChange}>
             <Tab label="Search Criteria" {...a11yProps(0)} />
-            <Tab label="By Transaction Id" {...a11yProps(1)} />
+            <Tab label="By Row ID" {...a11yProps(1)} />
             {/* <Tab label="By Search Text" {...a11yProps(2)} /> */}
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={1}>
           <SearchByFieldName
-            Label="Transaction Id"
+            Label="Row ID"
             onClickEvent={() => {
-              console.log("TransactionId");
+              console.log("Row ID");
             }}
           ></SearchByFieldName>
         </CustomTabPanel>

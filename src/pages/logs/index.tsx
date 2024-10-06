@@ -117,9 +117,9 @@ const Logs = () => {
         </Box>
         <CustomTabPanel value={value} index={1}>
           <SearchByFieldName
-            Label="Transaction Id"
+            Label="Row ID"
             onClickEvent={() => {
-              console.log("TransactionId");
+              console.log("Row ID");
             }}
           ></SearchByFieldName>
         </CustomTabPanel>
@@ -171,7 +171,7 @@ const Logs = () => {
               // backgroundColor="#ffff"
               display="flex"
               alignItems="center"
-              justifyContent="left"
+              justifyContent="center"
             >
               <FormControl className="search">
                 <TextField

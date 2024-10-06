@@ -1,25 +1,13 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  InputAdornment,
-  InputBase,
-  Paper,
-  Tab,
-  Tabs,
-  TextField,
-} from "@mui/material";
+import { Box, Button, Tab, Tabs } from "@mui/material";
 import Header from "../../components/header";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import dayjs, { Dayjs } from "dayjs";
-import {
-  DateTimePickerComponent,
-  InputField,
-} from "../../components/DateTimePickerComponent";
+import { DateTimePickerComponent } from "../../components/DateTimePickerComponent";
 import React, { useState } from "react";
 import SearchByFieldName from "../../components/search/byfieldname";
 import Table from "../table";
-import SearchIcon from "@mui/icons-material/Search";
+
+import Dropdown from "../../components/dropdown";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -140,7 +128,11 @@ const WindowsServices = () => {
             display="grid"
             gridTemplateColumns="repeat(4, 1fr)"
             gridAutoRows="50px"
-            sx={{ gap: "20px", marginBlock: "20px" }} //, backgroundColor: "#ffff"
+            sx={{
+              gap: "20px",
+              marginBlock: "20px",
+              width: "100%",
+            }} //, backgroundColor: "#ffff"
           >
             <Box
               gridColumn="span 1"
@@ -172,12 +164,12 @@ const WindowsServices = () => {
             </Box>
             <Box
               gridColumn="span 1"
-              // backgroundColor="#ffff"
+              backgroundColor="primary"
               display="flex"
               alignItems="center"
-              justifyContent="left"
+              justifyContent="center"
             >
-              <InputField label="Service Job" />
+              <Dropdown Label="Service Status" Items={serviceStatusItems} />
             </Box>
             <Box
               gridColumn="span 1"

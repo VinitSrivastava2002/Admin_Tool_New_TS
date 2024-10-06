@@ -6,7 +6,7 @@ const IbmApi = () => {
   return (
     <Box margin="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header Title="Ibm Api" />
+        <Header Title="IBM Api" />
         <Box>
           <Button
             sx={{
