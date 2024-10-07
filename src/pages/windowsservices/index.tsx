@@ -1,4 +1,4 @@
-import { Box, Button, Tab, Tabs } from "@mui/material";
+import { Box, Button, Tab, Tabs, TextField } from "@mui/material";
 import Header from "../../components/header";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import dayjs, { Dayjs } from "dayjs";
@@ -8,6 +8,7 @@ import SearchByFieldName from "../../components/search/byfieldname";
 import Table from "../table";
 
 import Dropdown from "../../components/dropdown";
+import SubHeader from "../../components/subheader";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -52,7 +53,21 @@ const WindowsServices = () => {
     { field: "isenable", headerName: "Is Enabled" },
   ];
 
-  let serviceStatusItems = ["All", "Success", "Failure"];
+  let serviceJobItems = [
+    "SmsSubmissionServiceJob",
+    "SmeRenewalOpportunityServiceJob",
+    "CaesarReconciliationServiceJob",
+    "MemberManagementFinalizerServiceJob",
+    "SmsReconciliationServiceJob",
+    "CaesarQueueProcessorServiceJob",
+    "AutoCommunicationJobRecursion",
+    "AsyncoperationDeleteCompletedService",
+    "SMEMarkAsCompletePolicyServiceJob",
+    "BrokerIntegrationServiceJob",
+    "StartTahaqaqValidationServiceJob",
+    "TeamAssignmentServiceJobBase",
+    "SendExpiredLinkEmailToAMServiceJob",
+  ];
 
   // Define the initial rows in the parent component
   const [rows, setRows] = useState([
@@ -103,36 +118,18 @@ const WindowsServices = () => {
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs value={value} onChange={handleChange}>
             <Tab label="Search Criteria" {...a11yProps(0)} />
-            <Tab label="By Row Id" {...a11yProps(1)} />
+            <Tab label="By Service Job" {...a11yProps(1)} />
             {/* <Tab label="By Search Text" {...a11yProps(2)} /> */}
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={1}>
-          <SearchByFieldName
-            Label="Transaction Id"
-            onClickEvent={() => {
-              console.log("TransactionId");
-            }}
-          ></SearchByFieldName>
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
-          <SearchByFieldName
-            Label="Search Text"
-            onClickEvent={() => {
-              console.log("Search Text");
-            }}
-          ></SearchByFieldName>
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={0}>
+          {/* <SearchByFieldName Label="Service Job"></SearchByFieldName> */}
+          <SubHeader Title="Search by Service Job"></SubHeader>
           <Box
             display="grid"
             gridTemplateColumns="repeat(4, 1fr)"
             gridAutoRows="50px"
-            sx={{
-              gap: "20px",
-              marginBlock: "20px",
-              width: "100%",
-            }} //, backgroundColor: "#ffff"
+            sx={{ gap: "20px", marginBlock: "20px" }} //, backgroundColor: "#ffff"
           >
             <Box
               gridColumn="span 1"
@@ -169,7 +166,81 @@ const WindowsServices = () => {
               alignItems="center"
               justifyContent="center"
             >
-              <Dropdown Label="Service Status" Items={serviceStatusItems} />
+              <Dropdown Label="Service Status" Items={serviceJobItems} />
+            </Box>
+            <Box
+              gridColumn="span 1"
+              backgroundColor="primary"
+              display="flex"
+              alignItems="center"
+              justifyContent="left"
+            >
+              <Button
+                sx={{
+                  backgroundColor: "#165a72",
+                  color: "white",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  paddingBlock: "8px",
+                }}
+              >
+                Find
+              </Button>
+            </Box>
+          </Box>
+          <Table fields={fields} rows={rows} setRows={setRows} />
+        </CustomTabPanel>
+
+        <CustomTabPanel value={value} index={0}>
+          <SubHeader Title="Search by Criteria"></SubHeader>
+          <Box
+            display="grid"
+            gridTemplateColumns="repeat(4, 0.2fr)"
+            gridAutoRows="50px"
+            sx={{ gap: "20px", marginBlock: "20px" }} //, backgroundColor: "#ffff"
+          >
+            <Box
+              gridColumn="span 1"
+              // backgroundColor="#ffff"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              {" "}
+              <DateTimePickerComponent
+                label="Start Date"
+                value={startDate}
+                onChange={setStartDate}
+              />
+            </Box>
+            <Box
+              gridColumn="span 1"
+              // backgroundColor="#ffff"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              {" "}
+              <DateTimePickerComponent
+                label="End Date"
+                value={endDate}
+                onChange={setEndDate}
+              />
+            </Box>
+            <Box
+              gridColumn="span 1"
+              backgroundColor="primary"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <TextField
+                fullWidth
+                id="outlined-basic"
+                size="small"
+                label="ID"
+                variant="outlined"
+              />
             </Box>
             <Box
               gridColumn="span 1"

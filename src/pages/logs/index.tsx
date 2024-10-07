@@ -18,6 +18,7 @@ import React, { useState } from "react";
 import SearchByFieldName from "../../components/search/byfieldname";
 import Table from "../table";
 import SearchIcon from "@mui/icons-material/Search";
+import SubHeader from "../../components/subheader";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -132,6 +133,7 @@ const Logs = () => {
           ></SearchByFieldName>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={0}>
+          <SubHeader Title="Search by Criteria"></SubHeader>
           <Box
             display="grid"
             gridTemplateColumns="repeat(4, 0.2fr)"
