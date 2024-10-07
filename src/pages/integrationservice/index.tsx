@@ -329,6 +329,7 @@ const IntegrationService = () => {
               </Button>
             </Box>
           </Box>
+          <Table fields={fields} rows={rows} setRows={setRows} />
         </CustomTabPanel>
       </Box>
     </Box>
