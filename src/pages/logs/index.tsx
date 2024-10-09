@@ -1,24 +1,11 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  IconButton,
-  InputAdornment,
-  InputBase,
-  Paper,
-  Tab,
-  Tabs,
-  TextField,
-} from "@mui/material";
+import { Box, Button, Tab, Tabs } from "@mui/material";
 import Header from "../../components/header";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import dayjs, { Dayjs } from "dayjs";
-import { DateTimePickerComponent } from "../../components/DateTimePickerComponent";
+import SearchbyCriteria from "../../components/search logs/bycriteria";
 import React, { useState } from "react";
 import SearchByFieldName from "../../components/search/byfieldname";
 import Table from "../table";
-import SearchIcon from "@mui/icons-material/Search";
-import SubHeader from "../../components/subheader";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -133,83 +120,7 @@ const Logs = () => {
           ></SearchByFieldName>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={0}>
-          <SubHeader Title="Search by Criteria"></SubHeader>
-          <Box
-            display="grid"
-            gridTemplateColumns="repeat(4, 0.2fr)"
-            gridAutoRows="50px"
-            sx={{ gap: "20px", marginBlock: "20px" }} //, backgroundColor: "#ffff"
-          >
-            <Box
-              gridColumn="span 1"
-              // backgroundColor="#ffff"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              {" "}
-              <DateTimePickerComponent
-                label="Start Date"
-                value={startDate}
-                onChange={setStartDate}
-              />
-            </Box>
-            <Box
-              gridColumn="span 1"
-              // backgroundColor="#ffff"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              {" "}
-              <DateTimePickerComponent
-                label="End Date"
-                value={endDate}
-                onChange={setEndDate}
-              />
-            </Box>
-            <Box
-              gridColumn="span 1"
-              // backgroundColor="#ffff"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <FormControl className="search">
-                <TextField
-                  size="small"
-                  variant="outlined"
-                  // onChange={handleChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </FormControl>
-            </Box>
-            <Box
-              gridColumn="span 1"
-              backgroundColor="primary"
-              display="flex"
-              alignItems="center"
-              justifyContent="left"
-            >
-              <Button
-                sx={{
-                  backgroundColor: "#165a72",
-                  color: "white",
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  paddingBlock: "8px",
-                }}
-              >
-                Search
-              </Button>
-            </Box>
-          </Box>
+          <SearchbyCriteria Label="Criteria" Text="Search" />
           <Table fields={fields} rows={rows} setRows={setRows} />
         </CustomTabPanel>
       </Box>

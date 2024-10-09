@@ -9,6 +9,8 @@ import Table from "../table";
 
 import Dropdown from "../../components/dropdown";
 import SubHeader from "../../components/subheader";
+import SearchbyCriteria from "../../components/search logs/bycriteria";
+import SearchbyJob from "../../components/search logs/byJob";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -123,151 +125,16 @@ const IntegrationService = () => {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={1}>
-          <SubHeader Title="Search by Job"></SubHeader>
-          <Box
-            display="grid"
-            gridTemplateColumns="repeat(4, 0.2fr)"
-            gridAutoRows="50px"
-            sx={{ gap: "20px", marginBlock: "20px" }} //, backgroundColor: "#ffff"
-          >
-            <Box
-              gridColumn="span 1"
-              // backgroundColor="#ffff"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              {" "}
-              <DateTimePickerComponent
-                label="Start Date"
-                value={startDate}
-                onChange={setStartDate}
-              />
-            </Box>
-            <Box
-              gridColumn="span 1"
-              // backgroundColor="#ffff"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              {" "}
-              <DateTimePickerComponent
-                label="End Date"
-                value={endDate}
-                onChange={setEndDate}
-              />
-            </Box>
-            <Box
-              gridColumn="span 1"
-              backgroundColor="primary"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Dropdown Label="Job Name" Items={serviceJobItems} />
-            </Box>
-            <Box
-              gridColumn="span 1"
-              backgroundColor="primary"
-              display="flex"
-              alignItems="center"
-              justifyContent="left"
-            >
-              <Button
-                sx={{
-                  backgroundColor: "#165a72",
-                  color: "white",
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  paddingBlock: "8px",
-                }}
-              >
-                Find
-              </Button>
-            </Box>
-          </Box>
+          <SearchbyJob
+            Label="Job"
+            DropDownLabel="Job Name"
+            serviceJobItems={serviceJobItems}
+          />
           <Table fields={fields} rows={rows} setRows={setRows} />
         </CustomTabPanel>
-        {/* <CustomTabPanel value={value} index={1}>
-          <SearchByFieldName
-            Label="Search Text"
-            onClickEvent={() => {
-              console.log("Search Text");
-            }}
-          ></SearchByFieldName>
-        </CustomTabPanel> */}
+
         <CustomTabPanel value={value} index={0}>
-          <SubHeader Title="Search by Criteria"></SubHeader>
-          <Box
-            display="grid"
-            gridTemplateColumns="repeat(4, 0.2fr)"
-            gridAutoRows="50px"
-            sx={{ gap: "20px", marginBlock: "20px" }} //, backgroundColor: "#ffff"
-          >
-            <Box
-              gridColumn="span 1"
-              // backgroundColor="#ffff"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              {" "}
-              <DateTimePickerComponent
-                label="Start Date"
-                value={startDate}
-                onChange={setStartDate}
-              />
-            </Box>
-            <Box
-              gridColumn="span 1"
-              // backgroundColor="#ffff"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              {" "}
-              <DateTimePickerComponent
-                label="End Date"
-                value={endDate}
-                onChange={setEndDate}
-              />
-            </Box>
-            <Box
-              gridColumn="span 1"
-              backgroundColor="primary"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <TextField
-                fullWidth
-                id="outlined-basic"
-                size="small"
-                label="ID"
-                variant="outlined"
-              />
-            </Box>
-            <Box
-              gridColumn="span 1"
-              backgroundColor="primary"
-              display="flex"
-              alignItems="center"
-              justifyContent="left"
-            >
-              <Button
-                sx={{
-                  backgroundColor: "#165a72",
-                  color: "white",
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  paddingBlock: "8px",
-                }}
-              >
-                Find
-              </Button>
-            </Box>
-          </Box>
+          <SearchbyCriteria Label="Criteria" Text="ID" />
           <Table fields={fields} rows={rows} setRows={setRows} />
         </CustomTabPanel>
 

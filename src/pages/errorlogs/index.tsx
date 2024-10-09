@@ -17,6 +17,7 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import Table from "../table";
 import SubHeader from "../../components/subheader";
+import SearchbyCriteria from "../../components/search logs/bycriteria";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -131,84 +132,7 @@ const ErrorLogs = () => {
           ></SearchByFieldName>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={0}>
-          <SubHeader Title="Search by Criteria"></SubHeader>
-          <Box
-            display="grid"
-            gridTemplateColumns="repeat(4, 0.2fr)"
-            gridAutoRows="50px"
-            sx={{ gap: "20px", marginBlock: "20px" }} //, backgroundColor: "#ffff"
-          >
-            <Box
-              gridColumn="span 1"
-              // backgroundColor="#ffff"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              {" "}
-              <DateTimePickerComponent
-                label="Start Date"
-                value={startDate}
-                onChange={setStartDate}
-              />
-            </Box>
-            <Box
-              gridColumn="span 1"
-              // backgroundColor="#ffff"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              {" "}
-              <DateTimePickerComponent
-                label="End Date"
-                value={endDate}
-                onChange={setEndDate}
-              />
-            </Box>
-            <Box
-              gridColumn="span 1"
-              // backgroundColor="#ffff"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <FormControl className="search">
-                <TextField
-                  size="small"
-                  variant="outlined"
-                  // onChange={handleChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </FormControl>
-            </Box>
-
-            <Box
-              gridColumn="span 1"
-              backgroundColor="primary"
-              display="flex"
-              alignItems="centre"
-              justifyContent="left"
-            >
-              <Button
-                sx={{
-                  backgroundColor: "#165a72",
-                  color: "white",
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  paddingBlock: "8px",
-                }}
-              >
-                Search
-              </Button>
-            </Box>
-          </Box>
+          <SearchbyCriteria Label="Criteria" Text="Search" />
           <Table fields={fields} rows={rows} setRows={setRows} />
         </CustomTabPanel>
       </Box>

@@ -17,7 +17,7 @@ export default function ({ Label, Items }: DropDownProps) {
   return (
     <Box sx={{ minWidth: 250 }}>
       <FormControl
-        fullWidth
+        // fullWidth
         sx={{
           ".MuiInputBase-root": {
             backgroundColor: "#ffff",
