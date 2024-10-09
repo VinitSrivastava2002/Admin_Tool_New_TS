@@ -25,7 +25,7 @@ export default function SearchbyJob({
         <SubHeader Title={"Search by " + Label}></SubHeader>
         <Box
           display="grid"
-          gridTemplateColumns="repeat(4, 1fr)"
+          gridTemplateColumns="repeat(5, 1fr)"
           gridAutoRows="50px"
           sx={{ gap: "20px", marginBlock: "20px" }} //, backgroundColor: "#ffff"
         >

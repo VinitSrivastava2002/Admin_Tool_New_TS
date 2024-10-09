@@ -17,8 +17,9 @@ export const DateTimePickerComponent: React.FC<
 > = ({ label, value, onChange }) => {
   return (
     <Box
+      // FullWidth
       sx={{
-        // width: "250px",
+        minWidth: "250px",
         // backgroundColor: "yellow",
         padding: "0px",
         display: "flex",

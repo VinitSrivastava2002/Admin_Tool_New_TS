@@ -59,7 +59,8 @@ export default function SearchbyCriteria({ Label, Text }: SearchByFieldProps) {
             justifyContent="center"
           >
             <TextField
-              fullWidth
+              // fullWidth
+              sx={{ minWidth: "250px" }}
               id="outlined-basic"
               size="small"
               label={Text}
