@@ -6,6 +6,8 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import * as React from "react";
 import SearchByCriteria from "../../components/search/bycriteria";
+import { useState } from "react";
+import dayjs, { Dayjs } from "dayjs";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -37,18 +39,41 @@ function a11yProps(index: number) {
 }
 
 export default function CaesarIntegrationLogs() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
+  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
+  const [serviceStatus, setServiceStatus] = useState<string>("");
+  const [handler, setHandler] = useState<string>("");
+  const [inputChange, setInputChange] = useState<string>("");
+
+  const handleInputChange = (value: string) => {
+    setInputChange(value); // Update state with the input value
+  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  let serviceStatusItems = ["All", "Success", "Failure"];
-  let handlerItems = [
+
+  let ServiceStatusItems = ["All", "Success", "Failure"];
+
+  let HandlerItems = [
     "All",
     "Sadad Transation Handle",
     "Customer Handler",
     "Subscription Rates Handler",
   ];
+
+  const handleSearchClick = () => {
+    console.log("input change:", inputChange); // Log the current transaction ID
+  };
+
+  const handleSearch = () => {
+    console.log("Start Date:", startDate);
+    console.log("End Date:", endDate);
+    console.log("Service Status:", serviceStatus);
+    console.log("Handler:", handler);
+  };
+
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -79,23 +104,29 @@ export default function CaesarIntegrationLogs() {
         <CustomTabPanel value={value} index={1}>
           <SearchByFieldName
             Label="Transaction Id"
-            onClickEvent={() => {
-              console.log("TransactionId");
-            }}
+            onChange={handleInputChange}
+            onClickEvent={handleSearchClick}
           ></SearchByFieldName>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
           <SearchByFieldName
             Label="Search Text"
-            onClickEvent={() => {
-              console.log("Search Text");
-            }}
+            onChange={handleInputChange}
+            onClickEvent={handleSearchClick}
           ></SearchByFieldName>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={0}>
           <SearchByCriteria
-            ServiceStatusItems={serviceStatusItems}
-            HandlerItems={handlerItems}
+            Label="Search Criteria"
+            startDate={startDate}
+            endDate={endDate}
+            ServiceStatusItems={ServiceStatusItems}
+            HandlerItems={HandlerItems}
+            onStartDateChange={setStartDate}
+            onEndDateChange={setEndDate}
+            onServiceStatusChange={setServiceStatus}
+            onHandlerChange={setHandler}
+            onSearch={handleSearch} // Function triggered when "Search" button is clicked
           ></SearchByCriteria>
         </CustomTabPanel>
       </Box>

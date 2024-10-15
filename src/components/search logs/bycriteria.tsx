@@ -7,12 +7,31 @@ import dayjs, { Dayjs } from "dayjs";
 interface SearchByFieldProps {
   Label: string;
   Text: String;
-  onClickEvent: () => void;
+  startDate: Dayjs | null;
+  endDate: Dayjs | null;
+  onTextChange: (value: string) => void; // onChange prop to capture input changes
+  onStartDateChange: (date: Dayjs | null) => void;
+  onEndDateChange: (date: Dayjs | null) => void;
+  onSearch: () => void;
 }
 
-export default function SearchbyCriteria({ Label, Text }: SearchByFieldProps) {
-  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
-  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
+export default function SearchbyCriteria({
+  Label,
+  Text,
+  startDate,
+  endDate,
+  onTextChange,
+  onStartDateChange,
+  onEndDateChange,
+  onSearch,
+}: SearchByFieldProps) {
+  const [inputValue, setInputValue] = useState<string>(""); // State for input value
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value); // Update local state
+    onTextChange(event.target.value); // Call the onChange prop to notify parent of changes
+  };
+
   return (
     <>
       <Box mb="20px" sx={{ height: "100%" }}>
@@ -34,7 +53,7 @@ export default function SearchbyCriteria({ Label, Text }: SearchByFieldProps) {
             <DateTimePickerComponent
               label="Start Date"
               value={startDate}
-              onChange={setStartDate}
+              onChange={onStartDateChange} // Use prop function to update start date
             />
           </Box>
           <Box
@@ -48,7 +67,7 @@ export default function SearchbyCriteria({ Label, Text }: SearchByFieldProps) {
             <DateTimePickerComponent
               label="End Date"
               value={endDate}
-              onChange={setEndDate}
+              onChange={onEndDateChange} // Use prop function to update end date
             />
           </Box>
           <Box
@@ -65,6 +84,8 @@ export default function SearchbyCriteria({ Label, Text }: SearchByFieldProps) {
               size="small"
               label={Text}
               variant="outlined"
+              value={inputValue} // Bind the input value to the state
+              onChange={handleInputChange} // Handle input change
             />
           </Box>
           <Box
@@ -82,6 +103,7 @@ export default function SearchbyCriteria({ Label, Text }: SearchByFieldProps) {
                 fontWeight: "bold",
                 paddingBlock: "8px",
               }}
+              onClick={onSearch}
             >
               Search
             </Button>

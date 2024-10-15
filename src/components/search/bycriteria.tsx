@@ -3,17 +3,33 @@ import SubHeader from "../subheader";
 import DropDown from "../dropdown";
 import Table from "../../pages/table";
 import { useState } from "react";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import { DateTimePickerComponent } from "../DateTimePickerComponent";
 
 interface SearchByFieldNameProps {
+  Label: string;
+  startDate: Dayjs | null;
+  endDate: Dayjs | null;
   ServiceStatusItems: string[];
   HandlerItems: string[];
+  onStartDateChange: (date: Dayjs | null) => void;
+  onEndDateChange: (date: Dayjs | null) => void;
+  onServiceStatusChange: (status: string) => void;
+  onHandlerChange: (handler: string) => void;
+  onSearch: () => void;
 }
 
 export default function SearchByFieldName({
+  Label,
+  startDate,
+  endDate,
   ServiceStatusItems,
   HandlerItems,
+  onStartDateChange,
+  onEndDateChange,
+  onServiceStatusChange,
+  onHandlerChange,
+  onSearch,
 }: SearchByFieldNameProps) {
   // Define the field names you want to pass as props
   const fields = [
@@ -25,7 +41,7 @@ export default function SearchByFieldName({
     { field: "isenable", headerName: "Is Enabled" },
   ];
 
-  // Define the initial rows in the parent component
+  // Define the initial rows
   const [rows, setRows] = useState([
     {
       id: 1,
@@ -46,12 +62,10 @@ export default function SearchByFieldName({
       isenable: "No",
     },
   ]);
-  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
-  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
 
   return (
     <Box sx={{ maxWidth: "100%" }}>
-      <SubHeader Title="Search by Criteria"></SubHeader>
+      <SubHeader Title={"Search by " + Label}></SubHeader>
 
       <Box
         display="grid"
@@ -61,15 +75,18 @@ export default function SearchByFieldName({
           gap: "20px",
           marginBlock: "20px",
           width: "100%",
-        }} //, backgroundColor: "#ffff"
+        }}
       >
+        {/* Start Date Picker */}
         <Box gridColumn="span 1" backgroundColor="primary" display="flex">
           <DateTimePickerComponent
             label="Start Date"
             value={startDate}
-            onChange={setStartDate}
+            onChange={onStartDateChange} // Use prop function to update start date
           />
         </Box>
+
+        {/* End Date Picker */}
         <Box
           gridColumn="span 1"
           backgroundColor="primary"
@@ -80,9 +97,11 @@ export default function SearchByFieldName({
           <DateTimePickerComponent
             label="End Date"
             value={endDate}
-            onChange={setEndDate}
+            onChange={onEndDateChange} // Use prop function to update end date
           />
         </Box>
+
+        {/* Service Status DropDown */}
         <Box
           gridColumn="span 1"
           backgroundColor="primary"
@@ -93,8 +112,11 @@ export default function SearchByFieldName({
           <DropDown
             Label="Service Status"
             Items={ServiceStatusItems}
-          ></DropDown>
+            onChange={onServiceStatusChange}
+          />
         </Box>
+
+        {/* Handler DropDown */}
         <Box
           gridColumn="span 1"
           backgroundColor="primary"
@@ -102,8 +124,14 @@ export default function SearchByFieldName({
           alignItems="center"
           justifyContent="center"
         >
-          <DropDown Label="Handlers" Items={HandlerItems}></DropDown>
+          <DropDown
+            Label="Handlers"
+            Items={HandlerItems}
+            onChange={onHandlerChange}
+          />
         </Box>
+
+        {/* Search Button */}
         <Box
           gridColumn="span 1"
           backgroundColor="primary"
@@ -119,11 +147,14 @@ export default function SearchByFieldName({
               fontWeight: "bold",
               paddingBlock: "8px",
             }}
+            onClick={onSearch} // Call the search function passed as a prop
           >
             Search
           </Button>
         </Box>
       </Box>
+
+      {/* Table Component */}
       <Table fields={fields} rows={rows} setRows={setRows} />
     </Box>
   );

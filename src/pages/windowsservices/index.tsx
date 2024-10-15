@@ -1,14 +1,9 @@
-import { Box, Button, Tab, Tabs, TextField } from "@mui/material";
+import { Box, Button, Tab, Tabs } from "@mui/material";
 import Header from "../../components/header";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import dayjs, { Dayjs } from "dayjs";
-import { DateTimePickerComponent } from "../../components/DateTimePickerComponent";
 import React, { useState } from "react";
-import SearchByFieldName from "../../components/search/byfieldname";
 import Table from "../table";
-
-import Dropdown from "../../components/dropdown";
-import SubHeader from "../../components/subheader";
 import SearchbyCriteria from "../../components/search logs/bycriteria";
 import SearchbyJob from "../../components/search logs/byJob";
 
@@ -42,9 +37,11 @@ function a11yProps(index: number) {
 }
 
 const WindowsServices = () => {
+  const [inputID, setInputId] = useState<string>("");
   const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
   const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
-  const [value, setValue] = React.useState(0);
+  const [serviceStatus, setServiceStatus] = useState<string>("");
+  const [value, setValue] = useState(0);
   // Define the field names you want to pass as props
   const fields = [
     { field: "name", headerName: "Name" },
@@ -92,6 +89,16 @@ const WindowsServices = () => {
       isenable: "No",
     },
   ]);
+  const handleIdChange = (value: string) => {
+    setInputId(value); // Update state with the input value
+  };
+
+  const handleSearch = () => {
+    console.log("Start Date:", startDate);
+    console.log("End Date:", endDate);
+    console.log("ID: ", inputID);
+    console.log("Service Status:", serviceStatus);
+  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -128,14 +135,29 @@ const WindowsServices = () => {
           {/* <SearchByFieldName Label="Service Job"></SearchByFieldName> */}
           <SearchbyJob
             Label="Service Job"
+            startDate={startDate}
+            endDate={endDate}
+            onStartDateChange={setStartDate}
+            onEndDateChange={setEndDate}
             DropDownLabel="Service Status"
             serviceJobItems={serviceJobItems}
+            onserviceJobItemsChange={setServiceStatus}
+            onSearch={handleSearch}
           />
           <Table fields={fields} rows={rows} setRows={setRows} />
         </CustomTabPanel>
 
         <CustomTabPanel value={value} index={0}>
-          <SearchbyCriteria Label="Criteria" Text="ID" />
+          <SearchbyCriteria
+            Label="Criteria"
+            Text="ID"
+            startDate={startDate}
+            endDate={endDate}
+            onStartDateChange={setStartDate}
+            onEndDateChange={setEndDate}
+            onTextChange={handleIdChange}
+            onSearch={handleSearch}
+          />
           <Table fields={fields} rows={rows} setRows={setRows} />
         </CustomTabPanel>
       </Box>

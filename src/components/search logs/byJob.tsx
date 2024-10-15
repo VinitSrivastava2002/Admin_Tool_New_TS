@@ -1,24 +1,33 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { DateTimePickerComponent } from "../../components/DateTimePickerComponent";
 import SubHeader from "../../components/subheader";
-import { useState } from "react";
-import dayjs, { Dayjs } from "dayjs";
+
+import { Dayjs } from "dayjs";
 import Dropdown from "../dropdown";
 
 interface SearchByFieldProps {
   Label: string;
+  startDate: Dayjs | null;
+  endDate: Dayjs | null;
   DropDownLabel: string;
   serviceJobItems: string[];
-  onClickEvent: () => void;
+  onserviceJobItemsChange: (status: string) => void;
+  onStartDateChange: (date: Dayjs | null) => void;
+  onEndDateChange: (date: Dayjs | null) => void;
+  onSearch: () => void;
 }
 
 export default function SearchbyJob({
   Label,
+  startDate,
+  endDate,
   DropDownLabel,
   serviceJobItems,
+  onserviceJobItemsChange,
+  onStartDateChange,
+  onEndDateChange,
+  onSearch,
 }: SearchByFieldProps) {
-  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
-  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
   return (
     <>
       <Box mb="20px" sx={{ height: "100%" }}>
@@ -40,7 +49,7 @@ export default function SearchbyJob({
             <DateTimePickerComponent
               label="Start Date"
               value={startDate}
-              onChange={setStartDate}
+              onChange={onStartDateChange} // Use prop function to update start date
             />
           </Box>
           <Box
@@ -54,7 +63,7 @@ export default function SearchbyJob({
             <DateTimePickerComponent
               label="End Date"
               value={endDate}
-              onChange={setEndDate}
+              onChange={onEndDateChange}
             />
           </Box>
           <Box
@@ -64,7 +73,11 @@ export default function SearchbyJob({
             alignItems="center"
             justifyContent="center"
           >
-            <Dropdown Label={DropDownLabel} Items={serviceJobItems} />
+            <Dropdown
+              Label={DropDownLabel}
+              Items={serviceJobItems}
+              onChange={onserviceJobItemsChange}
+            />
           </Box>
           <Box
             gridColumn="span 1"
@@ -81,6 +94,7 @@ export default function SearchbyJob({
                 fontWeight: "bold",
                 paddingBlock: "8px",
               }}
+              onClick={onSearch}
             >
               Find
             </Button>

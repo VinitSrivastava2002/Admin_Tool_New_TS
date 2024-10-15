@@ -49,9 +49,11 @@ function a11yProps(index: number) {
 }
 
 const ErrorLogs = () => {
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [inputRow, setInputRow] = useState<string>("");
   const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
   const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   // Define the field names you want to pass as props
   const fields = [
     { field: "name", headerName: "Name" },
@@ -88,6 +90,27 @@ const ErrorLogs = () => {
     setValue(newValue);
   };
 
+  // search row id ----------------------------------start
+  const handleInputRow = (value: string) => {
+    setInputRow(value); // Update state with the input value
+  };
+  const handleSearchRow = () => {
+    console.log("input change:", inputRow); // Log the current transaction ID
+  };
+  // search row id ------------------------------------end
+
+  // search criteria----------------------------------start
+  const handleSearchInput = (value: string) => {
+    setSearchInput(value); // Update state with the input value
+  };
+
+  const handleSearch = () => {
+    console.log("Start Date:", startDate);
+    console.log("End Date:", endDate);
+    console.log("Search: ", searchInput);
+  };
+  // search criteria----------------------------------end
+
   return (
     <Box margin="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -112,27 +135,27 @@ const ErrorLogs = () => {
           <Tabs value={value} onChange={handleChange}>
             <Tab label="Search Criteria" {...a11yProps(0)} />
             <Tab label="By Row ID" {...a11yProps(1)} />
-            {/* <Tab label="By Search Text" {...a11yProps(2)} /> */}
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={1}>
           <SearchByFieldName
             Label="Row ID"
-            onClickEvent={() => {
-              console.log("Row ID");
-            }}
+            onChange={handleInputRow}
+            onClickEvent={handleSearchRow}
           ></SearchByFieldName>
         </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
-          <SearchByFieldName
-            Label="Search Text"
-            onClickEvent={() => {
-              console.log("Search Text");
-            }}
-          ></SearchByFieldName>
-        </CustomTabPanel>
+
         <CustomTabPanel value={value} index={0}>
-          <SearchbyCriteria Label="Criteria" Text="Search" />
+          <SearchbyCriteria
+            Label="Criteria"
+            Text="Search"
+            startDate={startDate}
+            endDate={endDate}
+            onStartDateChange={setStartDate}
+            onEndDateChange={setEndDate}
+            onTextChange={handleSearchInput}
+            onSearch={handleSearch}
+          />
           <Table fields={fields} rows={rows} setRows={setRows} />
         </CustomTabPanel>
       </Box>

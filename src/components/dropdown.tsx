@@ -7,17 +7,22 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 interface DropDownProps {
   Label: string;
   Items: string[];
+  onChange: (value: string) => void; // Accept onChange as a prop
 }
 
-export default function ({ Label, Items }: DropDownProps) {
-  const [itemValue, setItemValue] = React.useState("");
+export default function DropDown({
+  Label,
+  Items,
+
+  onChange,
+}: DropDownProps) {
   const handleChange = (event: SelectChangeEvent) => {
-    setItemValue(event.target.value);
+    onChange(event.target.value); // Pass selected value back to parent via onChange prop
   };
+
   return (
     <Box sx={{ minWidth: 250 }}>
       <FormControl
-        // fullWidth
         sx={{
           ".MuiInputBase-root": {
             backgroundColor: "#ffff",
@@ -27,9 +32,13 @@ export default function ({ Label, Items }: DropDownProps) {
         size="small"
       >
         <InputLabel>{Label}</InputLabel>
-        <Select value={itemValue} label={Label} onChange={handleChange}>
+        <Select label={Label} onChange={handleChange}>
           {Items.map((Item, index) => (
-            <MenuItem value={index}>{Item}</MenuItem>
+            <MenuItem key={index} value={Item}>
+              {" "}
+              {/* Use Item as value */}
+              {Item}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>
