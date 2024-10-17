@@ -1,65 +1,45 @@
 import { Box, Button } from "@mui/material";
 import SubHeader from "../subheader";
-import DropDown from "../dropdown";
-import Table from "../../pages/table";
-import { Dayjs } from "dayjs";
-import { DateAndTimePicker } from "../dateandtimepicker";
-import { useState } from "react";
+import DropDown from "../dropdown"; // Assuming DropDown is a custom component
+import Table from "../../pages/table"; // Assuming Table is a custom component
+import { useRef } from "react";
+import dayjs, { Dayjs } from "dayjs";
+import { DateAndTimePicker } from "../dateandtimepicker"; // Assuming this is a custom component
 
 interface SearchByCriteriaProps {
   Label: string;
-  startDate: Dayjs | null;
-  endDate: Dayjs | null;
   ServiceStatusItems: string[];
   HandlerItems: string[];
-  onStartDateChange: (date: Dayjs | null) => void;
-  onEndDateChange: (date: Dayjs | null) => void;
-  onServiceStatusChange: (status: string) => void;
-  onHandlerChange: (handler: string) => void;
-  onSearch: (criteria: {
-    startDate: Dayjs | null;
-    endDate: Dayjs | null;
-    serviceStatus: string;
-    handler: string;
-  }) => void;
 }
 
 export default function SearchByCriteria({
   Label,
-  startDate,
-  endDate,
   ServiceStatusItems,
   HandlerItems,
-  onStartDateChange,
-  onEndDateChange,
-  onServiceStatusChange,
-  onHandlerChange,
-  onSearch,
-}: SearchByCriteriaProps) {
-  const [selectedServiceStatus, setSelectedServiceStatus] =
-    useState<string>("");
-  const [selectedHandler, setSelectedHandler] = useState<string>("");
+}: // onSearch,
+SearchByCriteriaProps) {
+  // Initialize refs with default values
+  const defaultStartDate = dayjs().subtract(7, "days"); // Default start date (7 days ago)
+  const defaultEndDate = dayjs(); // Default end date (current date)
 
-  // Handle the change of service status dropdown
-  const handleServiceStatusChange = (status: string) => {
-    setSelectedServiceStatus(status); // Update local state
-    onServiceStatusChange(status); // Notify parent
-  };
+  // Refs for the form values
 
-  // Handle the change of handler dropdown
-  const handleHandlerChange = (handler: string) => {
-    setSelectedHandler(handler); // Update local state
-    onHandlerChange(handler); // Notify parent
-  };
+  const startDateRef = useRef<Dayjs | null>(defaultStartDate); // Default to 7 days ago
+  const endDateRef = useRef<Dayjs | null>(defaultEndDate); // Default to current date
+  const serviceStatusRef = useRef<string>(""); // For DropDown
+  const handlerRef = useRef<string>(""); // For DropDown
 
   // Handle the search action and pass the criteria back to the parent
   const handleSearchClick = () => {
-    onSearch({
-      startDate,
-      endDate,
-      serviceStatus: selectedServiceStatus,
-      handler: selectedHandler,
-    });
+    const searchCriteria = {
+      startDate: startDateRef.current?.format("DD-MM-YYYY") || "",
+      endDate: endDateRef.current?.format("DD-MM-YYYY") || "",
+      serviceStatus: serviceStatusRef.current,
+      handler: handlerRef.current,
+    };
+
+    // onSearch(searchCriteria);
+    console.log("Search Criteria inside bycreteria component:", searchCriteria);
   };
 
   // Table field names
@@ -73,7 +53,7 @@ export default function SearchByCriteria({
   ];
 
   // Initial rows for the table
-  const [rows, setRows] = useState([
+  const rows = [
     {
       id: 1,
       name: "Name1",
@@ -92,7 +72,7 @@ export default function SearchByCriteria({
       incrementby: "2",
       isenable: "No",
     },
-  ]);
+  ];
 
   return (
     <Box sx={{ maxWidth: "100%" }}>
@@ -112,8 +92,8 @@ export default function SearchByCriteria({
         <Box gridColumn="span 1" backgroundColor="primary" display="flex">
           <DateAndTimePicker
             label="Start Date"
-            value={startDate}
-            onChange={onStartDateChange} // Pass start date change to parent
+            value={startDateRef.current} // Bind value to ref
+            onChange={(date: Dayjs | null) => (startDateRef.current = date)} // Store value in ref
           />
         </Box>
 
@@ -127,8 +107,8 @@ export default function SearchByCriteria({
         >
           <DateAndTimePicker
             label="End Date"
-            value={endDate}
-            onChange={onEndDateChange} // Pass end date change to parent
+            value={endDateRef.current} // Bind value to ref
+            onChange={(date: Dayjs | null) => (endDateRef.current = date)} // Store value in ref
           />
         </Box>
 
@@ -143,7 +123,8 @@ export default function SearchByCriteria({
           <DropDown
             Label="Service Status"
             Items={ServiceStatusItems}
-            onChange={handleServiceStatusChange} // Handle service status change
+            value={serviceStatusRef.current} // Bind value to ref
+            onChange={(status: string) => (serviceStatusRef.current = status)} // Store value in ref
           />
         </Box>
 
@@ -158,7 +139,8 @@ export default function SearchByCriteria({
           <DropDown
             Label="Handlers"
             Items={HandlerItems}
-            onChange={handleHandlerChange} // Handle handler change
+            value={handlerRef.current} // Bind value to ref
+            onChange={(handler: string) => (handlerRef.current = handler)} // Store value in ref
           />
         </Box>
 
@@ -186,7 +168,7 @@ export default function SearchByCriteria({
       </Box>
 
       {/* Table Component */}
-      <Table fields={fields} rows={rows} setRows={setRows} />
+      <Table fields={fields} rows={rows} />
     </Box>
   );
 }

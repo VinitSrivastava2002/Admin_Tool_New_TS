@@ -40,10 +40,10 @@ function a11yProps(index: number) {
 
 export default function CaesarIntegrationLogs() {
   const [value, setValue] = useState(0);
-  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
-  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
-  const [serviceStatus, setServiceStatus] = useState<string>("");
-  const [handler, setHandler] = useState<string>("");
+  // const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
+  // const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
+  // const [serviceStatus, setServiceStatus] = useState<string>("");
+  // const [handler, setHandler] = useState<string>("");
   const [inputChange, setInputChange] = useState<string>("");
 
   const handleInputChange = (value: string) => {
@@ -63,19 +63,9 @@ export default function CaesarIntegrationLogs() {
     "Subscription Rates Handler",
   ];
 
+  // for single search bar
   const handleSearchClick = () => {
     console.log("input change:", inputChange); // Log the current transaction ID
-  };
-
-  // Handle search logic
-  const handleSearch = (criteria: {
-    startDate: Dayjs | null;
-    endDate: Dayjs | null;
-    serviceStatus: string;
-    handler: string;
-  }) => {
-    console.log("Search Criteria:", criteria);
-    // You can use the search criteria to fetch data, filter results, etc.
   };
 
   return (
@@ -121,17 +111,10 @@ export default function CaesarIntegrationLogs() {
         </CustomTabPanel>
         <CustomTabPanel value={value} index={0}>
           <SearchByCriteria
-            Label="Search Criteria"
-            startDate={startDate}
-            endDate={endDate}
+            Label="Criteria"
             ServiceStatusItems={ServiceStatusItems}
             HandlerItems={HandlerItems}
-            onStartDateChange={(date) => setStartDate(date)}
-            onEndDateChange={(date) => setEndDate(date)}
-            onServiceStatusChange={(status) => setServiceStatus(status)}
-            onHandlerChange={(handler) => setHandler(handler)}
-            onSearch={handleSearch} // Pass the search handler to handle search action
-          ></SearchByCriteria>
+          />
         </CustomTabPanel>
       </Box>
     </Box>
