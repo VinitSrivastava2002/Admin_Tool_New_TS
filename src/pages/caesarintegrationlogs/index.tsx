@@ -7,7 +7,6 @@ import Tab from "@mui/material/Tab";
 import * as React from "react";
 import SearchByCriteria from "../../components/search/bycriteria";
 import { useState } from "react";
-import dayjs, { Dayjs } from "dayjs";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -38,32 +37,26 @@ function a11yProps(index: number) {
   };
 }
 
+let ServiceStatusItems = ["All", "Success", "Failure"];
+let HandlerItems = [
+  "All",
+  "Sadad Transation Handle",
+  "Customer Handler",
+  "Subscription Rates Handler",
+];
+
 export default function CaesarIntegrationLogs() {
   const [value, setValue] = useState(0);
-  // const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
-  // const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
-  // const [serviceStatus, setServiceStatus] = useState<string>("");
-  // const [handler, setHandler] = useState<string>("");
   const [inputChange, setInputChange] = useState<string>("");
-
-  const handleInputChange = (value: string) => {
-    setInputChange(value); // Update state with the input value
-  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  let ServiceStatusItems = ["All", "Success", "Failure"];
-
-  let HandlerItems = [
-    "All",
-    "Sadad Transation Handle",
-    "Customer Handler",
-    "Subscription Rates Handler",
-  ];
-
   // for single search bar
+  const handleInputChange = (value: string) => {
+    setInputChange(value); // Update state with the input value
+  };
   const handleSearchClick = () => {
     console.log("input change:", inputChange); // Log the current transaction ID
   };

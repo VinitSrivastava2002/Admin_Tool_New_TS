@@ -38,44 +38,30 @@ function a11yProps(index: number) {
   };
 }
 
+let ServiceStatusItems = ["All", "Success", "Failure"];
+let HandlerItems = [
+  "All",
+  "Sadad Transation Handle",
+  "Customer Handler",
+  "Subscription Rates Handler",
+];
+
 export default function MemberManagementLogs() {
   const [value, setValue] = useState(0);
-  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
-  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
-  const [serviceStatus, setServiceStatus] = useState<string>("");
-  const [handler, setHandler] = useState<string>("");
   const [inputChange, setInputChange] = useState<string>("");
-
-  const handleInputChange = (value: string) => {
-    setInputChange(value); // Update state with the input value
-  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
+  // for single search bar
+  const handleInputChange = (value: string) => {
+    setInputChange(value); // Update state with the input value
+  };
   const handleSearchClick = () => {
     console.log("input change:", inputChange); // Log the current transaction ID
   };
 
-  // Handle search logic
-  const handleSearch = (criteria: {
-    startDate: Dayjs | null;
-    endDate: Dayjs | null;
-    serviceStatus: string;
-    handler: string;
-  }) => {
-    console.log("Search Criteria:", criteria);
-    // You can use the search criteria to fetch data, filter results, etc.
-  };
-
-  let ServiceStatusItems = ["All", "Success", "Failure"];
-  let HandlerItems = [
-    "All",
-    "Sadad Transation Handle",
-    "Customer Handler",
-    "Subscription Rates Handler",
-  ];
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -119,16 +105,9 @@ export default function MemberManagementLogs() {
         </CustomTabPanel>
         <CustomTabPanel value={value} index={0}>
           <SearchByCriteria
-            Label="Search Criteria"
-            startDate={startDate}
-            endDate={endDate}
+            Label="Criteria"
             ServiceStatusItems={ServiceStatusItems}
             HandlerItems={HandlerItems}
-            onStartDateChange={(date) => setStartDate(date)}
-            onEndDateChange={(date) => setEndDate(date)}
-            onServiceStatusChange={(status) => setServiceStatus(status)}
-            onHandlerChange={(handler) => setHandler(handler)}
-            onSearch={handleSearch} // Pass the search handler to handle search action
           ></SearchByCriteria>
         </CustomTabPanel>
       </Box>

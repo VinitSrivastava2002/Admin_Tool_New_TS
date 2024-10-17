@@ -23,7 +23,6 @@ SearchByCriteriaProps) {
   const defaultEndDate = dayjs(); // Default end date (current date)
 
   // Refs for the form values
-
   const startDateRef = useRef<Dayjs | null>(defaultStartDate); // Default to 7 days ago
   const endDateRef = useRef<Dayjs | null>(defaultEndDate); // Default to current date
   const serviceStatusRef = useRef<string>(""); // For DropDown
