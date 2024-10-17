@@ -1,20 +1,22 @@
 import React from "react";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { Dayjs } from "dayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Box, TextField } from "@mui/material";
 
-interface DateTimePickerComponentProps {
+interface DateAndTimePickeProps {
   label: string;
   value: Dayjs | null;
   onChange: (newValue: Dayjs | null) => void;
 }
 
-export const DateTimePickerComponent: React.FC<
-  DateTimePickerComponentProps
-> = ({ label, value, onChange }) => {
+export const DateAndTimePicker: React.FC<DateAndTimePickeProps> = ({
+  label,
+  value,
+  onChange,
+}) => {
   return (
     <Box
       // FullWidth

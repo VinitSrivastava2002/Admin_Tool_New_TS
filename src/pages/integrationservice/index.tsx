@@ -43,6 +43,9 @@ const IntegrationService = () => {
   const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
   const [serviceStatus, setServiceStatus] = useState<string>("");
   const [value, setValue] = useState(0);
+
+  const [searchByID, setSearchByID] = useState<string>(""); // State for search text
+  const [selectedJob, setSelectedJob] = useState<string>("");
   // Define the field names you want to pass as props
   const fields = [
     { field: "name", headerName: "Name" },
@@ -91,19 +94,27 @@ const IntegrationService = () => {
     },
   ]);
 
-  const handleIdChange = (value: string) => {
-    setInputId(value); // Update state with the input value
-  };
-
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  const handleSearch = () => {
-    console.log("Start Date:", startDate);
-    console.log("End Date:", endDate);
-    console.log("ID: ", inputID);
-    console.log("ServiceStatus: ", serviceStatus);
+  const handleSearch = (criteria: {
+    text: string;
+    startDate: Dayjs | null;
+    endDate: Dayjs | null;
+  }) => {
+    console.log("Search criteria:", criteria);
+  };
+
+  // Handle the search logic when the search button is clicked
+  const handleSearchByJob = (searchCriteria: {
+    startDate: Dayjs | null;
+    endDate: Dayjs | null;
+    serviceJob: string;
+  }) => {
+    console.log("Search Criteria:", searchCriteria);
+    // Example: You can call an API or filter data based on the search criteria
+    // fetchFilteredData(searchCriteria);
   };
 
   return (
@@ -137,13 +148,13 @@ const IntegrationService = () => {
           <SearchbyJob
             Label="Job"
             DropDownLabel="Job Name"
-            serviceJobItems={serviceJobItems}
             startDate={startDate}
             endDate={endDate}
-            onStartDateChange={setStartDate}
-            onEndDateChange={setEndDate}
-            onserviceJobItemsChange={setServiceStatus}
-            onSearch={handleSearch}
+            serviceJobItems={serviceJobItems}
+            onserviceJobItemsChange={(status) => setSelectedJob(status)}
+            onStartDateChange={(date) => setStartDate(date)}
+            onEndDateChange={(date) => setEndDate(date)}
+            onSearch={handleSearchByJob} // Pass the search handler to process the search
           />
           <Table fields={fields} rows={rows} setRows={setRows} />
         </CustomTabPanel>
@@ -154,10 +165,10 @@ const IntegrationService = () => {
             Text="ID"
             startDate={startDate}
             endDate={endDate}
-            onStartDateChange={setStartDate}
-            onEndDateChange={setEndDate}
-            onTextChange={handleIdChange}
-            onSearch={handleSearch}
+            onTextChange={(value: string) => setSearchByID(value)}
+            onStartDateChange={(date) => setStartDate(date)}
+            onEndDateChange={(date) => setEndDate(date)}
+            onSearch={handleSearch} // Pass the handler to process the search
           />
           <Table fields={fields} rows={rows} setRows={setRows} />
         </CustomTabPanel>

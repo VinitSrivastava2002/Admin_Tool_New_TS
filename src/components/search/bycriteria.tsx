@@ -2,11 +2,11 @@ import { Box, Button } from "@mui/material";
 import SubHeader from "../subheader";
 import DropDown from "../dropdown";
 import Table from "../../pages/table";
-import { useState } from "react";
 import { Dayjs } from "dayjs";
-import { DateTimePickerComponent } from "../DateTimePickerComponent";
+import { DateAndTimePicker } from "../dateandtimepicker";
+import { useState } from "react";
 
-interface SearchByFieldNameProps {
+interface SearchByCriteriaProps {
   Label: string;
   startDate: Dayjs | null;
   endDate: Dayjs | null;
@@ -16,10 +16,15 @@ interface SearchByFieldNameProps {
   onEndDateChange: (date: Dayjs | null) => void;
   onServiceStatusChange: (status: string) => void;
   onHandlerChange: (handler: string) => void;
-  onSearch: () => void;
+  onSearch: (criteria: {
+    startDate: Dayjs | null;
+    endDate: Dayjs | null;
+    serviceStatus: string;
+    handler: string;
+  }) => void;
 }
 
-export default function SearchByFieldName({
+export default function SearchByCriteria({
   Label,
   startDate,
   endDate,
@@ -30,8 +35,34 @@ export default function SearchByFieldName({
   onServiceStatusChange,
   onHandlerChange,
   onSearch,
-}: SearchByFieldNameProps) {
-  // Define the field names you want to pass as props
+}: SearchByCriteriaProps) {
+  const [selectedServiceStatus, setSelectedServiceStatus] =
+    useState<string>("");
+  const [selectedHandler, setSelectedHandler] = useState<string>("");
+
+  // Handle the change of service status dropdown
+  const handleServiceStatusChange = (status: string) => {
+    setSelectedServiceStatus(status); // Update local state
+    onServiceStatusChange(status); // Notify parent
+  };
+
+  // Handle the change of handler dropdown
+  const handleHandlerChange = (handler: string) => {
+    setSelectedHandler(handler); // Update local state
+    onHandlerChange(handler); // Notify parent
+  };
+
+  // Handle the search action and pass the criteria back to the parent
+  const handleSearchClick = () => {
+    onSearch({
+      startDate,
+      endDate,
+      serviceStatus: selectedServiceStatus,
+      handler: selectedHandler,
+    });
+  };
+
+  // Table field names
   const fields = [
     { field: "name", headerName: "Name" },
     { field: "prefix", headerName: "Prefix" },
@@ -41,7 +72,7 @@ export default function SearchByFieldName({
     { field: "isenable", headerName: "Is Enabled" },
   ];
 
-  // Define the initial rows
+  // Initial rows for the table
   const [rows, setRows] = useState([
     {
       id: 1,
@@ -79,10 +110,10 @@ export default function SearchByFieldName({
       >
         {/* Start Date Picker */}
         <Box gridColumn="span 1" backgroundColor="primary" display="flex">
-          <DateTimePickerComponent
+          <DateAndTimePicker
             label="Start Date"
             value={startDate}
-            onChange={onStartDateChange} // Use prop function to update start date
+            onChange={onStartDateChange} // Pass start date change to parent
           />
         </Box>
 
@@ -94,10 +125,10 @@ export default function SearchByFieldName({
           alignItems="center"
           justifyContent="center"
         >
-          <DateTimePickerComponent
+          <DateAndTimePicker
             label="End Date"
             value={endDate}
-            onChange={onEndDateChange} // Use prop function to update end date
+            onChange={onEndDateChange} // Pass end date change to parent
           />
         </Box>
 
@@ -112,7 +143,7 @@ export default function SearchByFieldName({
           <DropDown
             Label="Service Status"
             Items={ServiceStatusItems}
-            onChange={onServiceStatusChange}
+            onChange={handleServiceStatusChange} // Handle service status change
           />
         </Box>
 
@@ -127,7 +158,7 @@ export default function SearchByFieldName({
           <DropDown
             Label="Handlers"
             Items={HandlerItems}
-            onChange={onHandlerChange}
+            onChange={handleHandlerChange} // Handle handler change
           />
         </Box>
 
@@ -147,7 +178,7 @@ export default function SearchByFieldName({
               fontWeight: "bold",
               paddingBlock: "8px",
             }}
-            onClick={onSearch} // Call the search function passed as a prop
+            onClick={handleSearchClick} // Call search function on button click
           >
             Search
           </Button>

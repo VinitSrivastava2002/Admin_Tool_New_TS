@@ -1,5 +1,5 @@
 import { Box, Button, TextField } from "@mui/material";
-import { DateTimePickerComponent } from "../../components/DateTimePickerComponent";
+import { DateAndTimePicker } from "../dateandtimepicker";
 import SubHeader from "../../components/subheader";
 import { useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
@@ -9,10 +9,14 @@ interface SearchByFieldProps {
   Text: String;
   startDate: Dayjs | null;
   endDate: Dayjs | null;
-  onTextChange: (value: string) => void; // onChange prop to capture input changes
+  onTextChange: (value: string) => void;
   onStartDateChange: (date: Dayjs | null) => void;
   onEndDateChange: (date: Dayjs | null) => void;
-  onSearch: () => void;
+  onSearch: (criteria: {
+    text: string;
+    startDate: Dayjs | null;
+    endDate: Dayjs | null;
+  }) => void; // Pass search criteria back to parent
 }
 
 export default function SearchbyCriteria({
@@ -25,11 +29,23 @@ export default function SearchbyCriteria({
   onEndDateChange,
   onSearch,
 }: SearchByFieldProps) {
-  const [inputValue, setInputValue] = useState<string>(""); // State for input value
+  const [inputValue, setInputValue] = useState<string>(""); // Local state for input value
 
+  // Handle input change for the search text
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value); // Update local state
-    onTextChange(event.target.value); // Call the onChange prop to notify parent of changes
+    const value = event.target.value;
+    setInputValue(value); // Update local state
+    onTextChange(value); // Notify parent component of input change
+  };
+
+  // Handle the search action (pass all values back to parent)
+  const handleSearchClick = () => {
+    // Pass the input values (text, startDate, endDate) to the parent via the onSearch prop
+    onSearch({
+      text: inputValue,
+      startDate: startDate,
+      endDate: endDate,
+    });
   };
 
   return (
@@ -40,57 +56,50 @@ export default function SearchbyCriteria({
           display="grid"
           gridTemplateColumns="repeat(4, 0.2fr)"
           gridAutoRows="50px"
-          sx={{ gap: "20px", marginBlock: "20px" }} //, backgroundColor: "#ffff"
+          sx={{ gap: "20px", marginBlock: "20px" }}
         >
           <Box
             gridColumn="span 1"
-            // backgroundColor="#ffff"
             display="flex"
             alignItems="center"
             justifyContent="center"
           >
-            {" "}
-            <DateTimePickerComponent
+            <DateAndTimePicker
               label="Start Date"
               value={startDate}
-              onChange={onStartDateChange} // Use prop function to update start date
+              onChange={onStartDateChange} // Notify parent of start date change
             />
           </Box>
           <Box
             gridColumn="span 1"
-            // backgroundColor="#ffff"
             display="flex"
             alignItems="center"
             justifyContent="center"
           >
-            {" "}
-            <DateTimePickerComponent
+            <DateAndTimePicker
               label="End Date"
               value={endDate}
-              onChange={onEndDateChange} // Use prop function to update end date
+              onChange={onEndDateChange} // Notify parent of end date change
             />
           </Box>
           <Box
             gridColumn="span 1"
-            backgroundColor="primary"
             display="flex"
             alignItems="center"
             justifyContent="center"
           >
             <TextField
-              // fullWidth
               sx={{ minWidth: "250px" }}
               id="outlined-basic"
               size="small"
               label={Text}
               variant="outlined"
-              value={inputValue} // Bind the input value to the state
+              value={inputValue} // Bind input value to local state
               onChange={handleInputChange} // Handle input change
             />
           </Box>
           <Box
             gridColumn="span 1"
-            backgroundColor="primary"
             display="flex"
             alignItems="center"
             justifyContent="left"
@@ -103,7 +112,7 @@ export default function SearchbyCriteria({
                 fontWeight: "bold",
                 paddingBlock: "8px",
               }}
-              onClick={onSearch}
+              onClick={handleSearchClick} // Handle search button click
             >
               Search
             </Button>

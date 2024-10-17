@@ -58,11 +58,15 @@ export default function MemberManagementLogs() {
     console.log("input change:", inputChange); // Log the current transaction ID
   };
 
-  const handleSearch = () => {
-    console.log("Start Date:", startDate);
-    console.log("End Date:", endDate);
-    console.log("Service Status:", serviceStatus);
-    console.log("Handler:", handler);
+  // Handle search logic
+  const handleSearch = (criteria: {
+    startDate: Dayjs | null;
+    endDate: Dayjs | null;
+    serviceStatus: string;
+    handler: string;
+  }) => {
+    console.log("Search Criteria:", criteria);
+    // You can use the search criteria to fetch data, filter results, etc.
   };
 
   let ServiceStatusItems = ["All", "Success", "Failure"];
@@ -115,16 +119,16 @@ export default function MemberManagementLogs() {
         </CustomTabPanel>
         <CustomTabPanel value={value} index={0}>
           <SearchByCriteria
-            Label="Criteria"
+            Label="Search Criteria"
             startDate={startDate}
             endDate={endDate}
             ServiceStatusItems={ServiceStatusItems}
             HandlerItems={HandlerItems}
-            onStartDateChange={setStartDate}
-            onEndDateChange={setEndDate}
-            onServiceStatusChange={setServiceStatus}
-            onHandlerChange={setHandler}
-            onSearch={handleSearch} // Function triggered when "Search" button is clicked
+            onStartDateChange={(date) => setStartDate(date)}
+            onEndDateChange={(date) => setEndDate(date)}
+            onServiceStatusChange={(status) => setServiceStatus(status)}
+            onHandlerChange={(handler) => setHandler(handler)}
+            onSearch={handleSearch} // Pass the search handler to handle search action
           ></SearchByCriteria>
         </CustomTabPanel>
       </Box>

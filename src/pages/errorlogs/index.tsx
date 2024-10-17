@@ -10,7 +10,7 @@ import {
 import Header from "../../components/header";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import dayjs, { Dayjs } from "dayjs";
-import { DateTimePickerComponent } from "../../components/DateTimePickerComponent";
+import { DateTimePickerComponent } from "../../components/dateandtimepicker";
 import React, { useState } from "react";
 import SearchByFieldName from "../../components/search/byfieldname";
 import SearchIcon from "@mui/icons-material/Search";
@@ -54,6 +54,8 @@ const ErrorLogs = () => {
   const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
   const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
   const [value, setValue] = useState(0);
+
+  const [searchText, setSearchText] = useState<string>(""); // State for search text
   // Define the field names you want to pass as props
   const fields = [
     { field: "name", headerName: "Name" },
@@ -100,14 +102,12 @@ const ErrorLogs = () => {
   // search row id ------------------------------------end
 
   // search criteria----------------------------------start
-  const handleSearchInput = (value: string) => {
-    setSearchInput(value); // Update state with the input value
-  };
-
-  const handleSearch = () => {
-    console.log("Start Date:", startDate);
-    console.log("End Date:", endDate);
-    console.log("Search: ", searchInput);
+  const handleSearch = (criteria: {
+    text: string;
+    startDate: Dayjs | null;
+    endDate: Dayjs | null;
+  }) => {
+    console.log("Search criteria:", criteria);
   };
   // search criteria----------------------------------end
 
@@ -148,13 +148,13 @@ const ErrorLogs = () => {
         <CustomTabPanel value={value} index={0}>
           <SearchbyCriteria
             Label="Criteria"
-            Text="Search"
+            Text="Search Text"
             startDate={startDate}
             endDate={endDate}
-            onStartDateChange={setStartDate}
-            onEndDateChange={setEndDate}
-            onTextChange={handleSearchInput}
-            onSearch={handleSearch}
+            onTextChange={(value: string) => setSearchText(value)}
+            onStartDateChange={(date) => setStartDate(date)}
+            onEndDateChange={(date) => setEndDate(date)}
+            onSearch={handleSearch} // Pass the handler to process the search
           />
           <Table fields={fields} rows={rows} setRows={setRows} />
         </CustomTabPanel>

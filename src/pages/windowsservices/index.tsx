@@ -42,6 +42,9 @@ const WindowsServices = () => {
   const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
   const [serviceStatus, setServiceStatus] = useState<string>("");
   const [value, setValue] = useState(0);
+
+  const [searchByID, setSearchByID] = useState<string>(""); // State for search text
+  const [selectedJob, setSelectedJob] = useState<string>("");
   // Define the field names you want to pass as props
   const fields = [
     { field: "name", headerName: "Name" },
@@ -89,15 +92,24 @@ const WindowsServices = () => {
       isenable: "No",
     },
   ]);
-  const handleIdChange = (value: string) => {
-    setInputId(value); // Update state with the input value
+
+  const handleSearch = (criteria: {
+    text: string;
+    startDate: Dayjs | null;
+    endDate: Dayjs | null;
+  }) => {
+    console.log("Search criteria:", criteria);
   };
 
-  const handleSearch = () => {
-    console.log("Start Date:", startDate);
-    console.log("End Date:", endDate);
-    console.log("ID: ", inputID);
-    console.log("Service Status:", serviceStatus);
+  // Handle the search logic when the search button is clicked
+  const handleSearchByJob = (searchCriteria: {
+    startDate: Dayjs | null;
+    endDate: Dayjs | null;
+    serviceJob: string;
+  }) => {
+    console.log("Search Criteria:", searchCriteria);
+    // Example: You can call an API or filter data based on the search criteria
+    // fetchFilteredData(searchCriteria);
   };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -134,15 +146,15 @@ const WindowsServices = () => {
         <CustomTabPanel value={value} index={1}>
           {/* <SearchByFieldName Label="Service Job"></SearchByFieldName> */}
           <SearchbyJob
-            Label="Service Job"
+            Label="Job Search"
+            DropDownLabel="Select Job"
             startDate={startDate}
             endDate={endDate}
-            onStartDateChange={setStartDate}
-            onEndDateChange={setEndDate}
-            DropDownLabel="Service Status"
             serviceJobItems={serviceJobItems}
-            onserviceJobItemsChange={setServiceStatus}
-            onSearch={handleSearch}
+            onserviceJobItemsChange={(status) => setSelectedJob(status)}
+            onStartDateChange={(date) => setStartDate(date)}
+            onEndDateChange={(date) => setEndDate(date)}
+            onSearch={handleSearchByJob} // Pass the search handler to process the search
           />
           <Table fields={fields} rows={rows} setRows={setRows} />
         </CustomTabPanel>
@@ -153,10 +165,10 @@ const WindowsServices = () => {
             Text="ID"
             startDate={startDate}
             endDate={endDate}
-            onStartDateChange={setStartDate}
-            onEndDateChange={setEndDate}
-            onTextChange={handleIdChange}
-            onSearch={handleSearch}
+            onTextChange={(value: string) => setSearchByID(value)}
+            onStartDateChange={(date) => setStartDate(date)}
+            onEndDateChange={(date) => setEndDate(date)}
+            onSearch={handleSearch} // Pass the handler to process the search
           />
           <Table fields={fields} rows={rows} setRows={setRows} />
         </CustomTabPanel>
