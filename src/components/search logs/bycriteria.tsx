@@ -1,51 +1,37 @@
 import { Box, Button, TextField } from "@mui/material";
 import { DateAndTimePicker } from "../dateandtimepicker";
 import SubHeader from "../../components/subheader";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 
 interface SearchByFieldProps {
   Label: string;
-  Text: String;
-  startDate: Dayjs | null;
-  endDate: Dayjs | null;
-  onTextChange: (value: string) => void;
-  onStartDateChange: (date: Dayjs | null) => void;
-  onEndDateChange: (date: Dayjs | null) => void;
-  onSearch: (criteria: {
-    text: string;
-    startDate: Dayjs | null;
-    endDate: Dayjs | null;
-  }) => void; // Pass search criteria back to parent
+  Text: string;
 }
 
-export default function SearchbyCriteria({
-  Label,
-  Text,
-  startDate,
-  endDate,
-  onTextChange,
-  onStartDateChange,
-  onEndDateChange,
-  onSearch,
-}: SearchByFieldProps) {
-  const [inputValue, setInputValue] = useState<string>(""); // Local state for input value
+export default function SearchbyCriteria({ Label, Text }: SearchByFieldProps) {
+  // Initialize refs with default values
+  const defaultStartDate = dayjs().subtract(7, "days"); // Default start date (7 days ago)
+  const defaultEndDate = dayjs(); // Default end date (current date)
 
-  // Handle input change for the search text
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setInputValue(value); // Update local state
-    onTextChange(value); // Notify parent component of input change
-  };
+  // Refs for the form values
+  const startDateRef = useRef<Dayjs | null>(defaultStartDate); // Default to 7 days ago
+  const endDateRef = useRef<Dayjs | null>(defaultEndDate); // Default to current date
+  const searchFieldRef = useRef<HTMLInputElement>(null); // Ref for the text field
 
-  // Handle the search action (pass all values back to parent)
+  // Handle the search action and pass the criteria back to the parent
   const handleSearchClick = () => {
-    // Pass the input values (text, startDate, endDate) to the parent via the onSearch prop
-    onSearch({
-      text: inputValue,
-      startDate: startDate,
-      endDate: endDate,
-    });
+    const searchCriteria = {
+      startDate: startDateRef.current?.format("DD-MM-YYYY") || "",
+      endDate: endDateRef.current?.format("DD-MM-YYYY") || "",
+      searchField: searchFieldRef.current?.value || "", // Get value from the ref
+    };
+
+    // onSearch(searchCriteria);
+    console.log(
+      "Search Criteria inside bycreteria log component:",
+      searchCriteria
+    );
   };
 
   return (
@@ -66,8 +52,8 @@ export default function SearchbyCriteria({
           >
             <DateAndTimePicker
               label="Start Date"
-              value={startDate}
-              onChange={onStartDateChange} // Notify parent of start date change
+              value={startDateRef.current} // Bind value to ref
+              onChange={(date: Dayjs | null) => (startDateRef.current = date)} // Store value in ref
             />
           </Box>
           <Box
@@ -78,8 +64,8 @@ export default function SearchbyCriteria({
           >
             <DateAndTimePicker
               label="End Date"
-              value={endDate}
-              onChange={onEndDateChange} // Notify parent of end date change
+              value={endDateRef.current} // Bind value to ref
+              onChange={(date: Dayjs | null) => (endDateRef.current = date)} // Store value in ref
             />
           </Box>
           <Box
@@ -94,8 +80,7 @@ export default function SearchbyCriteria({
               size="small"
               label={Text}
               variant="outlined"
-              value={inputValue} // Bind input value to local state
-              onChange={handleInputChange} // Handle input change
+              inputRef={searchFieldRef} // Attach ref to the input element
             />
           </Box>
           <Box

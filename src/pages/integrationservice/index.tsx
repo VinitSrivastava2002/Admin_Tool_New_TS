@@ -37,40 +37,33 @@ function a11yProps(index: number) {
   };
 }
 
+const fields = [
+  { field: "name", headerName: "Name" },
+  { field: "prefix", headerName: "Prefix" },
+  { field: "suffix", headerName: "Suffix" },
+  { field: "digits", headerName: "Digits" },
+  { field: "incrementby", headerName: "Increment By" },
+  { field: "isenable", headerName: "Is Enabled" },
+];
+
+let serviceJobItems = [
+  "SmsSubmissionServiceJob",
+  "SmeRenewalOpportunityServiceJob",
+  "CaesarReconciliationServiceJob",
+  "MemberManagementFinalizerServiceJob",
+  "SmsReconciliationServiceJob",
+  "CaesarQueueProcessorServiceJob",
+  "AutoCommunicationJobRecursion",
+  "AsyncoperationDeleteCompletedService",
+  "SMEMarkAsCompletePolicyServiceJob",
+  "BrokerIntegrationServiceJob",
+  "StartTahaqaqValidationServiceJob",
+  "TeamAssignmentServiceJobBase",
+  "SendExpiredLinkEmailToAMServiceJob",
+];
+
 const IntegrationService = () => {
-  const [inputID, setInputId] = useState<string>("");
-  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
-  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
-  const [serviceStatus, setServiceStatus] = useState<string>("");
   const [value, setValue] = useState(0);
-
-  const [searchByID, setSearchByID] = useState<string>(""); // State for search text
-  const [selectedJob, setSelectedJob] = useState<string>("");
-  // Define the field names you want to pass as props
-  const fields = [
-    { field: "name", headerName: "Name" },
-    { field: "prefix", headerName: "Prefix" },
-    { field: "suffix", headerName: "Suffix" },
-    { field: "digits", headerName: "Digits" },
-    { field: "incrementby", headerName: "Increment By" },
-    { field: "isenable", headerName: "Is Enabled" },
-  ];
-
-  let serviceJobItems = [
-    "SmsSubmissionServiceJob",
-    "SmeRenewalOpportunityServiceJob",
-    "CaesarReconciliationServiceJob",
-    "MemberManagementFinalizerServiceJob",
-    "SmsReconciliationServiceJob",
-    "CaesarQueueProcessorServiceJob",
-    "AutoCommunicationJobRecursion",
-    "AsyncoperationDeleteCompletedService",
-    "SMEMarkAsCompletePolicyServiceJob",
-    "BrokerIntegrationServiceJob",
-    "StartTahaqaqValidationServiceJob",
-    "TeamAssignmentServiceJobBase",
-    "SendExpiredLinkEmailToAMServiceJob",
-  ];
 
   // Define the initial rows in the parent component
   const [rows, setRows] = useState([
@@ -96,25 +89,6 @@ const IntegrationService = () => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
-  };
-
-  const handleSearch = (criteria: {
-    text: string;
-    startDate: Dayjs | null;
-    endDate: Dayjs | null;
-  }) => {
-    console.log("Search criteria:", criteria);
-  };
-
-  // Handle the search logic when the search button is clicked
-  const handleSearchByJob = (searchCriteria: {
-    startDate: Dayjs | null;
-    endDate: Dayjs | null;
-    serviceJob: string;
-  }) => {
-    console.log("Search Criteria:", searchCriteria);
-    // Example: You can call an API or filter data based on the search criteria
-    // fetchFilteredData(searchCriteria);
   };
 
   return (
@@ -148,28 +122,13 @@ const IntegrationService = () => {
           <SearchbyJob
             Label="Job"
             DropDownLabel="Job Name"
-            startDate={startDate}
-            endDate={endDate}
             serviceJobItems={serviceJobItems}
-            onserviceJobItemsChange={(status) => setSelectedJob(status)}
-            onStartDateChange={(date) => setStartDate(date)}
-            onEndDateChange={(date) => setEndDate(date)}
-            onSearch={handleSearchByJob} // Pass the search handler to process the search
           />
           <Table fields={fields} rows={rows} setRows={setRows} />
         </CustomTabPanel>
 
         <CustomTabPanel value={value} index={0}>
-          <SearchbyCriteria
-            Label="Criteria"
-            Text="ID"
-            startDate={startDate}
-            endDate={endDate}
-            onTextChange={(value: string) => setSearchByID(value)}
-            onStartDateChange={(date) => setStartDate(date)}
-            onEndDateChange={(date) => setEndDate(date)}
-            onSearch={handleSearch} // Pass the handler to process the search
-          />
+          <SearchbyCriteria Label="Criteria" Text="ID" />
           <Table fields={fields} rows={rows} setRows={setRows} />
         </CustomTabPanel>
 

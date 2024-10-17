@@ -1,52 +1,40 @@
 import { Box, Button } from "@mui/material";
 import { DateAndTimePicker } from "../dateandtimepicker";
 import SubHeader from "../../components/subheader";
-import { useState } from "react";
-import { Dayjs } from "dayjs";
+import { useRef, useState } from "react";
+import dayjs, { Dayjs } from "dayjs";
 import Dropdown from "../dropdown";
 
 interface SearchByFieldProps {
   Label: string;
-  startDate: Dayjs | null;
-  endDate: Dayjs | null;
   DropDownLabel: string;
   serviceJobItems: string[];
-  onserviceJobItemsChange: (status: string) => void;
-  onStartDateChange: (date: Dayjs | null) => void;
-  onEndDateChange: (date: Dayjs | null) => void;
-  onSearch: (searchCriteria: {
-    startDate: Dayjs | null;
-    endDate: Dayjs | null;
-    serviceJob: string;
-  }) => void;
 }
 
 export default function SearchbyJob({
   Label,
-  startDate,
-  endDate,
   DropDownLabel,
   serviceJobItems,
-  onserviceJobItemsChange,
-  onStartDateChange,
-  onEndDateChange,
-  onSearch,
 }: SearchByFieldProps) {
-  const [selectedServiceJob, setSelectedServiceJob] = useState<string>("");
+  // Initialize refs with default values
+  const defaultStartDate = dayjs().subtract(7, "days"); // Default start date (7 days ago)
+  const defaultEndDate = dayjs(); // Default end date (current date)
 
-  // Handle the change of service job in the dropdown
-  const handleServiceJobChange = (status: string) => {
-    setSelectedServiceJob(status); // Update local state for dropdown
-    onserviceJobItemsChange(status); // Notify parent of dropdown selection
-  };
+  // Refs for the form values
+  const startDateRef = useRef<Dayjs | null>(defaultStartDate); // Default to 7 days ago
+  const endDateRef = useRef<Dayjs | null>(defaultEndDate); // Default to current date
+  const serviceJobItemRef = useRef<string>(""); // For DropDown
 
-  // Handle search button click and pass all values back to parent
+  // Handle the search action and pass the criteria back to the parent
   const handleSearchClick = () => {
-    onSearch({
-      startDate,
-      endDate,
-      serviceJob: selectedServiceJob,
-    });
+    const searchCriteria = {
+      startDate: startDateRef.current?.format("DD-MM-YYYY") || "",
+      endDate: endDateRef.current?.format("DD-MM-YYYY") || "",
+      serviceJobItemsStatus: serviceJobItemRef.current,
+    };
+
+    // onSearch(searchCriteria);
+    console.log("Search Criteria inside by job component:", searchCriteria);
   };
 
   return (
@@ -66,8 +54,8 @@ export default function SearchbyJob({
         >
           <DateAndTimePicker
             label="Start Date"
-            value={startDate}
-            onChange={onStartDateChange} // Notify parent of start date change
+            value={startDateRef.current} // Bind value to ref
+            onChange={(date: Dayjs | null) => (startDateRef.current = date)} // Store value in ref
           />
         </Box>
         <Box
@@ -78,8 +66,8 @@ export default function SearchbyJob({
         >
           <DateAndTimePicker
             label="End Date"
-            value={endDate}
-            onChange={onEndDateChange} // Notify parent of end date change
+            value={endDateRef.current} // Bind value to ref
+            onChange={(date: Dayjs | null) => (endDateRef.current = date)} // Store value in ref
           />
         </Box>
         <Box
@@ -91,7 +79,8 @@ export default function SearchbyJob({
           <Dropdown
             Label={DropDownLabel}
             Items={serviceJobItems}
-            onChange={handleServiceJobChange} // Handle dropdown change
+            value={serviceJobItemRef.current} // Bind value to ref
+            onChange={(status: string) => (serviceJobItemRef.current = status)} // Store value in ref
           />
         </Box>
         <Box
