@@ -48,18 +48,9 @@ let HandlerItems = [
 
 export default function MemberManagementLogs() {
   const [value, setValue] = useState(0);
-  const [inputChange, setInputChange] = useState<string>("");
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
-  };
-
-  // for single search bar
-  const handleInputChange = (value: string) => {
-    setInputChange(value); // Update state with the input value
-  };
-  const handleSearchClick = () => {
-    console.log("input change:", inputChange); // Log the current transaction ID
   };
 
   return (
@@ -90,18 +81,10 @@ export default function MemberManagementLogs() {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={1}>
-          <SearchByFieldName
-            Label="Opportunity Id"
-            onChange={handleInputChange}
-            onClickEvent={handleSearchClick}
-          ></SearchByFieldName>
+          <SearchByFieldName Label="Opportunity Id"></SearchByFieldName>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
-          <SearchByFieldName
-            Label="Member List Id"
-            onChange={handleInputChange}
-            onClickEvent={handleSearchClick}
-          ></SearchByFieldName>
+          <SearchByFieldName Label="Member List Id"></SearchByFieldName>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={0}>
           <SearchByCriteria

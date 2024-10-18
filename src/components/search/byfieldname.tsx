@@ -1,20 +1,20 @@
 import { Box, Paper, IconButton, InputBase } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import SubHeader from "../subheader";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Table from "../../pages/table";
 
 interface SearchByFieldProps {
   Label: string;
-  onChange: (value: string) => void; // onChange prop to capture input changes
-  onClickEvent: () => void; // onClick prop for search button click
+  // onChange: (value: string) => void; // onChange prop to capture input changes
+  // onClickEvent: () => void; // onClick prop for search button click
 }
 
 export default function SearchByFieldName({
   Label,
-  onChange,
-  onClickEvent,
-}: SearchByFieldProps) {
+}: // onChange,
+// onClickEvent,
+SearchByFieldProps) {
   // Define the field names you want to pass as props
   const fields = [
     { field: "name", headerName: "Name" },
@@ -38,11 +38,24 @@ export default function SearchByFieldName({
     },
   ]);
 
-  const [inputValue, setInputValue] = useState<string>(""); // State for input value
+  // const [inputValue, setInputValue] = useState<string>(""); // State for input value
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value); // Update local state
-    onChange(event.target.value); // Call the onChange prop to notify parent of changes
+  // useRef to store the input value without triggering re-renders
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setInputValue(event.target.value); // Update local state
+  //   onChange(event.target.value); // Call the onChange prop to notify parent of changes
+  // };
+  // Handle the search action and pass the criteria back to the parent
+  const handleSearchClick = () => {
+    const searchCriteria = {
+      searchField: inputRef.current?.value || "", // Get value from the ref
+    };
+    console.log(
+      "Search Criteria inside byFieldName log component:",
+      searchCriteria
+    );
   };
 
   return (
@@ -64,14 +77,13 @@ export default function SearchByFieldName({
             sx={{ ml: 1, flex: 1 }}
             placeholder={Label}
             inputProps={{ "aria-label": `search ${Label}` }}
-            value={inputValue} // Bind the input value to the state
-            onChange={handleInputChange} // Handle input change
+            inputRef={inputRef} // Attach ref to InputBase
           />
           <IconButton
             type="button"
             sx={{ p: "10px" }}
             aria-label="search"
-            onClick={onClickEvent} // Trigger the search on click
+            onClick={handleSearchClick} // Trigger the search on click
           >
             <SearchIcon />
           </IconButton>
