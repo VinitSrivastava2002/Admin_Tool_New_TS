@@ -7,6 +7,7 @@ import Tab from "@mui/material/Tab";
 import * as React from "react";
 import SearchByCriteria from "../../components/search/bycriteria";
 import { useState } from "react";
+import CustomerHandler from "../../components/customerhandler";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -93,6 +94,7 @@ export default function CaesarIntegrationLogs() {
           />
         </CustomTabPanel>
       </Box>
+      <CustomerHandler />
     </Box>
   );
 }

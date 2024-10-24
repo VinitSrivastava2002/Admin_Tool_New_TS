@@ -10,21 +10,17 @@ interface SearchByFieldProps {
   // onClickEvent: () => void; // onClick prop for search button click
 }
 
-export default function SearchByFieldName({
-  Label,
-}: // onChange,
-// onClickEvent,
-SearchByFieldProps) {
-  // Define the field names you want to pass as props
-  const fields = [
-    { field: "name", headerName: "Name" },
-    { field: "address", headerName: "Address" },
-    { field: "phonenumber", headerName: "Phone no." },
-    { field: "age", headerName: "Age" },
-    { field: "incrementby", headerName: "Increment By" },
-    { field: "isenable", headerName: "Is Enabled" },
-  ];
+// Define the field names you want to pass as props
+const fields = [
+  { field: "name", headerName: "Name" },
+  { field: "address", headerName: "Address" },
+  { field: "phonenumber", headerName: "Phone no." },
+  { field: "age", headerName: "Age" },
+  { field: "incrementby", headerName: "Increment By" },
+  { field: "isenable", headerName: "Is Enabled" },
+];
 
+export default function SearchByFieldName({ Label }: SearchByFieldProps) {
   // Define the initial rows in the parent component
   const [rows, setRows] = useState([
     {
@@ -38,15 +34,9 @@ SearchByFieldProps) {
     },
   ]);
 
-  // const [inputValue, setInputValue] = useState<string>(""); // State for input value
-
   // useRef to store the input value without triggering re-renders
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setInputValue(event.target.value); // Update local state
-  //   onChange(event.target.value); // Call the onChange prop to notify parent of changes
-  // };
   // Handle the search action and pass the criteria back to the parent
   const handleSearchClick = () => {
     const searchCriteria = {

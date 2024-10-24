@@ -8,8 +8,8 @@ import { Box, TextField } from "@mui/material";
 
 interface DateAndTimePickeProps {
   label: string;
-  value: Dayjs | null;
-  onChange: (newValue: Dayjs | null) => void;
+  value?: Dayjs | null;
+  onChange?: (newValue: Dayjs | null) => void;
 }
 
 export const DateAndTimePicker: React.FC<DateAndTimePickeProps> = ({
