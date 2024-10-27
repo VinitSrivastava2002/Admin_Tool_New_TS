@@ -13,14 +13,16 @@ import {
   TextField,
 } from "@mui/material";
 import { FC, useState } from "react";
-import { DateAndTimePicker } from "./dateandtimepicker";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import CodeEditor from "./codeeditor";
 
 interface CustomerHandlerProps {}
 
 const style = {
   position: "fixed",
+  display: "flex",
+  flexDirection: "column",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
@@ -28,9 +30,9 @@ const style = {
   padding: "20px",
   boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
   zIndex: 1000,
-  width: "768px",
+  width: "1200px",
   height: "600px",
-
+  gap: "16px",
   borderRadius: "8px",
 };
 
@@ -87,22 +89,21 @@ const CustomerHandler: FC<CustomerHandlerProps> = () => {
             width: "auto",
             height: "auto",
             dispaly: "flex",
-            justifyContent: "center",
-            borderColor: "text.primary",
-            // backgroundColor: "blue",
+            // justifyContent: "center",
+            // alignItems: "center",
+            borderColor: "#165a72",
             borderRadius: "8px",
           }}
         >
           <FormControl>
             <Box
               display="grid"
-              gridTemplateColumns="repeat(3, 1fr)"
+              gridTemplateColumns="repeat(4, 1fr)"
               gridAutoRows="50px"
-              alignContent="center"
+              justifyContent="center"
               sx={{
                 gap: "10px",
-                margin: "10px",
-                // marginBlock: "10px",
+                margin: "15px",
                 width: "100%",
               }}
             >
@@ -114,7 +115,13 @@ const CustomerHandler: FC<CustomerHandlerProps> = () => {
                 justifyContent="center"
                 flexDirection="column" // Aligns elements vertically
               >
-                <FormLabel sx={{ fontSize: "14px", marginBottom: "2px" }}>
+                <FormLabel
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                    marginBottom: "2px",
+                  }}
+                >
                   Transaction ID
                 </FormLabel>
                 <TextField
@@ -137,7 +144,13 @@ const CustomerHandler: FC<CustomerHandlerProps> = () => {
                 justifyContent="center"
                 flexDirection="column" // Aligns elements vertically
               >
-                <FormLabel sx={{ fontSize: "14px", marginBottom: "2px" }}>
+                <FormLabel
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                    marginBottom: "2px",
+                  }}
+                >
                   Transaction Date
                 </FormLabel>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -160,7 +173,13 @@ const CustomerHandler: FC<CustomerHandlerProps> = () => {
                 justifyContent="center"
                 flexDirection="column" // Aligns elements vertically
               >
-                <FormLabel sx={{ fontSize: "14px", marginBottom: "2px" }}>
+                <FormLabel
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                    marginBottom: "2px",
+                  }}
+                >
                   Operation Result
                 </FormLabel>
                 <TextField
@@ -179,11 +198,39 @@ const CustomerHandler: FC<CustomerHandlerProps> = () => {
                 gridColumn="span 1"
                 backgroundColor="primary"
                 display="flex"
+                alignItems="end"
+                justifyContent="left"
+              >
+                <Button
+                  sx={{
+                    backgroundColor: "#165a72",
+                    height: "30px",
+                    width: "195px",
+                    color: "white",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    paddingBlock: "8px",
+                  }}
+                  // onClick={handleSearchClick} // Call search function on button click
+                >
+                  Download Logs
+                </Button>
+              </Box>
+              <Box
+                gridColumn="span 1"
+                backgroundColor="primary"
+                display="flex"
                 alignItems="flex-start"
                 justifyContent="center"
                 flexDirection="column" // Aligns elements vertically
               >
-                <FormLabel sx={{ fontSize: "14px", marginBottom: "2px" }}>
+                <FormLabel
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                    marginBottom: "2px",
+                  }}
+                >
                   Handler Name
                 </FormLabel>
                 <TextField
@@ -206,7 +253,13 @@ const CustomerHandler: FC<CustomerHandlerProps> = () => {
                 justifyContent="center"
                 flexDirection="column" // Aligns elements vertically
               >
-                <FormLabel sx={{ fontSize: "14px", marginBottom: "2px" }}>
+                <FormLabel
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                    marginBottom: "2px",
+                  }}
+                >
                   Process Time (ms)
                 </FormLabel>
                 <TextField
@@ -229,7 +282,13 @@ const CustomerHandler: FC<CustomerHandlerProps> = () => {
                 justifyContent="center"
                 flexDirection="column" // Aligns elements vertically
               >
-                <FormLabel sx={{ fontSize: "14px", marginBottom: "2px" }}>
+                <FormLabel
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                    marginBottom: "2px",
+                  }}
+                >
                   System Error Log ID
                 </FormLabel>
                 <TextField
@@ -244,50 +303,18 @@ const CustomerHandler: FC<CustomerHandlerProps> = () => {
                   }}
                 />
               </Box>
-            </Box>
-
-            {/* // butoon gor text field */}
-            <Box
-              gridColumn="span 1"
-              backgroundColor="primary"
-              display="flex"
-              alignItems="flex-start"
-              justifyContent="start"
-              sx={{ gap: "10px", marginBottom: "10px", marginInline: "10px" }}
-              flexDirection="row" // Aligns elements vertically
-            >
-              <Box
-                gridColumn="span 1"
-                backgroundColor="primary"
-                display="flex"
-                alignItems="center"
-                justifyContent="left"
-              >
-                <Button
-                  sx={{
-                    backgroundColor: "#165a72",
-                    height: "30px",
-                    color: "white",
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                    paddingBlock: "8px",
-                  }}
-                  // onClick={handleSearchClick} // Call search function on button click
-                >
-                  Download Logs
-                </Button>
-              </Box>
               <Box
                 gridColmn="span 1"
                 backgroundColor="primary"
                 display="flex"
-                alignItems="center"
+                alignItems="end"
                 justifyContent="left"
               >
                 <Button
                   sx={{
                     backgroundColor: "#165a72",
                     height: "30px",
+                    width: "195px",
                     color: "white",
                     fontSize: "14px",
                     fontWeight: "bold",
@@ -301,13 +328,13 @@ const CustomerHandler: FC<CustomerHandlerProps> = () => {
             </Box>
           </FormControl>
         </Box>
-        <CodeBox />
+        <CodeBoxWithTabs />
       </Box>
     </Modal>
   );
 };
 
-const CodeBox: FC<CustomerHandlerProps> = () => {
+const CodeBoxWithTabs: FC<CustomerHandlerProps> = () => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -319,11 +346,11 @@ const CodeBox: FC<CustomerHandlerProps> = () => {
       <Box
         sx={{
           border: 1,
-          width: "auto",
-          height: "auto",
+          width: "100%",
+          height: "100%",
           dispaly: "flex",
           justifyContent: "center",
-          borderColor: "text.primary",
+          borderColor: "#165a72",
           // backgroundColor: "blue",
           borderRadius: "8px",
         }}
@@ -404,7 +431,7 @@ const CodeBox: FC<CustomerHandlerProps> = () => {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          Item One
+          <CodeEditor />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           Item Two
