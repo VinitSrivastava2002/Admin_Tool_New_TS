@@ -16,8 +16,18 @@ import { FC, useState } from "react";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CodeEditor from "./codeeditor";
+import { Dayjs } from "dayjs";
 
-interface CustomerHandlerProps {}
+interface CustomerHandlerProps {
+  TransactionId: string;
+  TransactionDate: Dayjs | null;
+  OperationResult: string;
+  HandlerName: string;
+  ProcessTime: string;
+  SystemErrorLogID: string;
+  handleOpen: boolean;
+  handleClose: () => void;
+}
 
 const style = {
   position: "fixed",
@@ -35,6 +45,48 @@ const style = {
   gap: "16px",
   borderRadius: "8px",
 };
+
+const dummyXmlData = `
+    <?xml version="1.0" encoding="UTF-8"?>
+<breakfast_menu>
+
+<food>
+<name>Belgian Waffles</name>
+<price>$5.95</price>
+<description>Two of our famous Belgian Waffles with plenty of real maple syrup</description>
+<calories>650</calories>
+</food>
+
+<food>
+<name>Strawberry Belgian Waffles</name>
+<price>$7.95</price>
+<description>Light Belgian waffles covered with strawberries and whipped cream</description>
+<calories>900</calories>
+</food>
+
+<food>
+<name>Berry-Berry Belgian Waffles</name>
+<price>$8.95</price>
+<description>Light Belgian waffles covered with an assortment of fresh berries and whipped cream</description>
+<calories>900</calories>
+</food>
+
+<food>
+<name>French Toast</name>
+<price>$4.50</price>
+<description>Thick slices made from our homemade sourdough bread</description>
+<calories>600</calories>
+</food>
+
+<food>
+<name>Homestyle Breakfast</name>
+<price>$6.95</price>
+<description>Two eggs, bacon or sausage, toast, and our ever-popular hash browns</description>
+<calories>950</calories>
+</food>
+
+</breakfast_menu>
+  `;
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -65,19 +117,27 @@ function a11yProps(index: number) {
   };
 }
 
-const CustomerHandler: FC<CustomerHandlerProps> = () => {
-  const [open, setOpen] = useState(false);
-  //   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
+const CustomerHandler: FC<CustomerHandlerProps> = ({
+  TransactionId,
+  TransactionDate,
+  OperationResult,
+  HandlerName,
+  ProcessTime,
+  SystemErrorLogID,
+  handleOpen,
+  handleClose,
+}) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  console.log(handleOpen);
+
   return (
     <Modal
-      open={true}
+      open={handleOpen}
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -127,6 +187,7 @@ const CustomerHandler: FC<CustomerHandlerProps> = () => {
                 <TextField
                   size="small"
                   variant="outlined"
+                  value={TransactionId}
                   InputProps={{
                     readOnly: true,
                     sx: {
@@ -156,6 +217,7 @@ const CustomerHandler: FC<CustomerHandlerProps> = () => {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DateTimePicker
                     disableOpenPicker
+                    value={TransactionDate}
                     slotProps={{ textField: { size: "small" } }}
                     sx={{
                       "& .MuiInputBase-input": {
@@ -185,6 +247,7 @@ const CustomerHandler: FC<CustomerHandlerProps> = () => {
                 <TextField
                   size="small"
                   variant="outlined"
+                  value={OperationResult}
                   InputProps={{
                     readOnly: true,
                     sx: {
@@ -236,6 +299,7 @@ const CustomerHandler: FC<CustomerHandlerProps> = () => {
                 <TextField
                   size="small"
                   variant="outlined"
+                  value={HandlerName}
                   InputProps={{
                     readOnly: true,
                     sx: {
@@ -265,6 +329,7 @@ const CustomerHandler: FC<CustomerHandlerProps> = () => {
                 <TextField
                   size="small"
                   variant="outlined"
+                  value={ProcessTime}
                   InputProps={{
                     readOnly: true,
                     sx: {
@@ -294,6 +359,7 @@ const CustomerHandler: FC<CustomerHandlerProps> = () => {
                 <TextField
                   size="small"
                   variant="outlined"
+                  value={SystemErrorLogID}
                   InputProps={{
                     readOnly: true,
                     sx: {
@@ -328,18 +394,23 @@ const CustomerHandler: FC<CustomerHandlerProps> = () => {
             </Box>
           </FormControl>
         </Box>
-        <CodeBoxWithTabs />
+        <CodeBoxWithTabs CodeData={dummyXmlData} />
       </Box>
     </Modal>
   );
 };
 
-const CodeBoxWithTabs: FC<CustomerHandlerProps> = () => {
+interface CodeBoxWithTabsProps {
+  CodeData: string;
+}
+
+const CodeBoxWithTabs: FC<CodeBoxWithTabsProps> = ({ CodeData }) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
   return (
     <>
       {/* buttons and data box  */}
@@ -431,13 +502,13 @@ const CodeBoxWithTabs: FC<CustomerHandlerProps> = () => {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          <CodeEditor />
+          <CodeEditor CodeData={CodeData} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          Item Two
+          <CodeEditor CodeData={CodeData} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
-          Item Three
+          <CodeEditor CodeData={CodeData} />
         </CustomTabPanel>
       </Box>
     </>

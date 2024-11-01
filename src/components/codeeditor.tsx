@@ -4,7 +4,9 @@ import { Box, Button } from "@mui/material";
 import xmlFormatter from "xml-formatter";
 import { FC, useState } from "react";
 
-interface CodeEditorProps {}
+interface CodeEditorProps {
+  CodeData: string;
+}
 
 const dummyXmlData = `
     <?xml version="1.0" encoding="UTF-8"?>
@@ -48,8 +50,9 @@ const dummyXmlData = `
 </breakfast_menu>
   `;
 
-const CodeEditor: FC<CodeEditorProps> = () => {
+const CodeEditor: FC<CodeEditorProps> = ({ CodeData }) => {
   const [copyText, setCopyText] = useState("Copy");
+  // console.log(typeof dummyXmlData);
 
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(formattedXmlData);
@@ -57,12 +60,11 @@ const CodeEditor: FC<CodeEditorProps> = () => {
     setTimeout(() => setCopyText("Copy"), 2000);
   };
   // Format the XML data before passing it to the editor
-  const formattedXmlData = xmlFormatter(dummyXmlData, {
+  const formattedXmlData = xmlFormatter(CodeData, {
     indentation: "  ", // Indentation for each level
     collapseContent: true, // Keeps minimal content tags on one line
   });
   return (
-    // <DialogContent>
     <Box
       // display="flex"
       position="relative"
@@ -88,11 +90,7 @@ const CodeEditor: FC<CodeEditorProps> = () => {
       <Button
         variant="text"
         color="primary"
-        startIcon={
-          copyText === "Copy" ? (
-            <ContentCopy size="small" display="flex" justifyContent="center" />
-          ) : null
-        }
+        startIcon={copyText === "Copy" ? <ContentCopy /> : null}
         onClick={handleCopyToClipboard}
         sx={{
           position: "absolute",

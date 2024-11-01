@@ -18,13 +18,17 @@ import {
   GridRowModel,
   GridRowEditStopReasons,
   GridSlots,
+  GridRowParams,
 } from "@mui/x-data-grid";
+import CustomerHandler from "../components/customerhandler";
+import dayjs from "dayjs";
 
 // Interface for dynamic fields passed from the parent
 interface TableProps {
   fields: Array<{ field: string; headerName: string }>;
   rows: GridRowsProp;
   setRows: React.Dispatch<React.SetStateAction<GridRowsProp>>;
+  // handleRowClick: (params: GridRowParams) => void; // Define handleRowClick type
 }
 
 interface EditToolbarProps {
@@ -35,7 +39,7 @@ interface EditToolbarProps {
 }
 
 function EditToolbar(props: EditToolbarProps) {
-  const { setRows, setRowModesModel } = props;
+  const { setRows } = props;
 
   const handleClick = () => {
     setRows((oldRows) => {
@@ -68,6 +72,20 @@ function EditToolbar(props: EditToolbarProps) {
 // Define the Table component
 const Table: React.FC<TableProps> = ({ fields, rows, setRows }) => {
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRowData, setSelectedRowData] = useState<any>(null);
+
+  // Handle row click to open the popup with row data
+  const handleRowClick = (params: GridRowParams) => {
+    setSelectedRowData(params.row); // Store clicked row data
+    setIsModalOpen(true); // Open the dialog
+  };
+
+  // // Close the popup
+  const handleClose = () => {
+    setIsModalOpen(false);
+    setSelectedRowData(null);
+  };
 
   const handleRowEditStop: GridEventListener<"rowEditStop"> = (
     params,
@@ -167,6 +185,8 @@ const Table: React.FC<TableProps> = ({ fields, rows, setRows }) => {
     },
   ];
 
+  const transactionDate = dayjs("01-21-2023 4:15 AM", "MM/DD/YYYY hh:mm aa");
+
   return (
     ///sx={{ height: "100%", width: "100%" }}
     <Box>
@@ -179,6 +199,7 @@ const Table: React.FC<TableProps> = ({ fields, rows, setRows }) => {
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
+        onRowClick={handleRowClick} // Add onRowClick event here
         slots={{
           toolbar: EditToolbar as GridSlots["toolbar"],
         }}
@@ -186,6 +207,19 @@ const Table: React.FC<TableProps> = ({ fields, rows, setRows }) => {
           toolbar: { setRows, setRowModesModel },
         }}
       />
+      {/* CustomerHandler Modal */}
+      {isModalOpen && (
+        <CustomerHandler
+          TransactionId={selectedRowData.id}
+          TransactionDate={selectedRowData.TransactionDate}
+          OperationResult={selectedRowData.OperationResult}
+          HandlerName={selectedRowData.name}
+          ProcessTime="" //{selectedRowData.ProcessTime}
+          SystemErrorLogID="" //{selectedRowData.SystemErrorLogID}
+          handleOpen={isModalOpen}
+          handleClose={handleClose}
+        />
+      )}
     </Box>
   );
 };
