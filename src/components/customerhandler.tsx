@@ -7,6 +7,7 @@ import {
   Button,
   FormControl,
   FormLabel,
+  IconButton,
   Modal,
   Tab,
   Tabs,
@@ -17,6 +18,7 @@ import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CodeEditor from "./codeeditor";
 import { Dayjs } from "dayjs";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface CustomerHandlerProps {
   TransactionId: string;
@@ -127,12 +129,6 @@ const CustomerHandler: FC<CustomerHandlerProps> = ({
   handleOpen,
   handleClose,
 }) => {
-  const [value, setValue] = useState(0);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
   console.log(handleOpen);
 
   return (
@@ -143,6 +139,27 @@ const CustomerHandler: FC<CustomerHandlerProps> = ({
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "1px",
+            right: "1px",
+            cursor: "pointer",
+          }}
+        >
+          <IconButton
+            sx={{
+              position: "absolute",
+              top: "1px",
+              right: "1px",
+              padding: 0,
+              cursor: "pointer",
+            }}
+            onClick={handleClose}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </Box>
         <Box
           sx={{
             border: 1,
